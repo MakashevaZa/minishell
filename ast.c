@@ -56,8 +56,8 @@ t_ast*	insert_val(t_ast **ast, int value)
 		*ast = create_node(value);
 		return (NULL);
 	}
-	if (value == tmp->value)
-		return NULL;
+	// if (value == tmp->value)
+	// 	return NULL;
 	if (value < tmp->value)
 		return (insert_val(&(tmp->left), value));
 	else

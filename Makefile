@@ -10,7 +10,7 @@ LIBFT_HEADERS = $(LIBFT_DIRECTORY)include/
 HEADER =	minishell.h
 
 SOURCES =	main.c\
-			ast.c\
+			# ast.c\
 			
 	
 
@@ -38,6 +38,9 @@ $(OBJECTS_DIRECTORY)%.o : $(SOURCES_DIRECTORY)%.c $(HEADER)
 	@mkdir -p $(OBJECTS_DIRECTORY)
 	@$(CC) $(FLAGS) -c $(INCLUDES) $< -o $@
 	@echo "$(NAME): $(GREEN)$(OBJECTS_DIRECTORY) was created$(RESET)"
+
+test:	all
+		./minishell
 
 
 clean:
