@@ -13,11 +13,12 @@ typedef struct s_ast
 {
 	struct s_ast	*left;
 	struct s_ast	*right;
-	int value;
+	char			*value;
+	int				prior;
 }					t_ast;
 
 
 //-------ast.c
-t_ast*	create_node(int value);
+t_ast*	create_node(char *value);
 
 #endif

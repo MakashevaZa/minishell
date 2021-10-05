@@ -9,8 +9,8 @@ LIBFT_HEADERS = $(LIBFT_DIRECTORY)include/
 
 HEADER =	minishell.h
 
-SOURCES =	main.c\
-			# ast.c\
+SOURCES =	main_d.c\
+			ast.c\
 			
 	
 
