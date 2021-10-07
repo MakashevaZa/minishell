@@ -24,159 +24,63 @@ char **get_envp(char **envp)
 	return(data);
 }
 
-// int redirection_pars(char *line, int i)
-// {
-// 	while (line[i])
-// 	{
-// 		line[i] == 
-// 	}
-// }
-
-int check_char(char *line, char ch, int i)
+char *skip_space(char *line, int *i)
 {
+	int j = *i;
+	char *tmp;
+	char *tmp2;
+	char *tmp3;
+	char *res;
+
+	// i = 0;
+	// while (line[*i] != ' ')
+	// 	*i++;
+	tmp = ft_substr(line, 0, j + 1);
+	while (line[*i] == '_')
+		(*i)++;
+	// tmp3 = ft_substr(line, )
+	tmp2 = ft_strdup(line + *i);
+	tmp = ft_strjoin(tmp, tmp2);
+	printf("res = %s\n", tmp);
+	return (tmp);
+}
+
+void pre_parse(char *line)
+{
+	int i;
+	char *tmp;
+	char *tmp2;
+	char *res;
+
+	i = 0;
 	while (line[i])
 	{
-		if (line[i] == ch)
-			return (1);
-		(i)++;
-	}
-	return (0);
-}
-
-char *single_quote_parse(char *line, int *i)
-{
-	int j = *i;
-	char *tmp;
-	char *tmp2;
-	char *tmp3;
-	if (check_char(line, '\'', j + 1) == 1)
-	{
-		while (line[++(*i)])
+		if (line[i] == '_')
 		{
-			if (line[(*i)] == '\'')
-				break ;
+			tmp = ft_substr(line, 0, i + 1);
+			while (line[i] == '_')
+				(i)++;
+	// tmp3 = ft_substr(line, )
+			tmp2 = ft_strdup(line + i);
+			line = ft_strjoin(tmp, tmp2);
+			printf("res = %s\n", tmp);
 		}
-		tmp = ft_substr(line, 0, j);
-		tmp2 = ft_substr(line, j + 1,  *i - j - 1);
-		tmp3 = ft_strdup(line + *i + 1);
-		tmp = ft_strjoin(tmp, tmp2);
-		tmp = ft_strjoin(tmp, tmp3);
-		(*i)--;
+			// line = skip_space(line, &i);
+		else
+			i++;
 	}
-	else
-		return (line);
-	return (tmp);
-}
-char	*slesh_parse(char *line, int *i)
-{
-	int j = *i;
-	char *tmp;
-	char *tmp2;
-	char *tmp3;
-
-	tmp = ft_substr(line, 0, j + 1);
-	printf("tmp = %s\n", tmp);
-	tmp2 = ft_substr(line, j + 1,  *i -j - 1);
-	printf("tmp2 = %s\n", tmp2);
-	// tmp3 = ft_strdup(line + *i + 1);
-	tmp = ft_strjoin(tmp, tmp2);
-	// tmp = ft_strjoin(tmp, tmp3);
-	free(line);
-	++(*i);
-	return (tmp);
+	
 }
 
-char	*double_quote_parse(char *line, int *i)
-{
-	int j = *i;
-	char *tmp;
-	char *tmp2;
-	char *tmp3;
-
-	if (check_char(line, '\"', j + 1) == 1)
-	{
-		while (line[++(*i)])
-		{
-			if (line[*i] == '\\' || line[*i + 1] == '\"' || line[*i + 1] == '$' || line[*i + 1] == '\\')
-				line = slesh_parse(line, i);
-			if (line[*i] == '\"')
-				break ;
-		}
-		tmp = ft_substr(line, 0, j);
-		tmp2 = ft_substr(line, j+ 1,  *i -j - 1);
-		tmp3 = ft_strdup(line + *i + 1);
-		tmp = ft_strjoin(tmp, tmp2);
-		tmp = ft_strjoin(tmp, tmp3);
-		(*i)--;
-	}
-	else
-		return (line);
-	// free(line);
-	return (tmp);
-}
-
-
-int if_key(char c)
-{
-	if (c == '_' || ft_isalnum(c))
-		return (1);
-	return (0);
-}
-
-char *parse_dollar(char *line, int *i, char **get_env)
-{
-	int j = *i;
-	char *tmp;
-	char *tmp2;
-	char *tmp3;
-	char *tmp4;
-	char *res;
-	int z;
-
-	while (line[++(*i)])
-		if (!if_key(line[*i]))
-			break ;
-	if (*i == j + 1)
-		return (line);
-	tmp = ft_substr(line, j + 1, *i - j - 1);
-	int k = -1;
-	while (get_env[++k])
-	{
-		z = 0;
-		while (get_env[k][z] && get_env[k][z] != '=')
-			z++;
-		tmp2 = ft_substr(get_env[k], 0, z);
-		if (ft_strcmp(tmp, tmp2) == 0)
-			break ;
-	}
-	tmp2 = ft_substr(get_env[k], z + 1, ft_strlen(get_env[k]) - z);
-	tmp3 = ft_substr(line, 0, j);
-	tmp4 = ft_substr(line, *i, ft_strlen(line));
-	res = ft_strjoin(tmp3, tmp2);
-	res = ft_strjoin(res, tmp4);
-	return (res);
-} 
-
-char *parsing(char *line, char **get_env)
-{
-	t_ast *tmp;
-	int i;
-
-	i = -1;
-	while (line[++i])
-	{
-			if (line[i] == '\'')
-				line = single_quote_parse(line, &i);
-			if (line[i] == '\\')
-				line = slesh_parse(line, &i);
-			if (line[i] == '\"')
-				line = double_quote_parse(line, &i);
-			if (line[i] == '$')
-				line = parse_dollar(line, &i, get_env);
-	}
-	return (line);
-}
-
+// enum built_in {
+// 	echo,
+// 	cd,
+// 	pwd,
+// 	export,
+// 	unset,
+// 	env,
+// 	exit
+// };
 
 int main(int argc, char **argv, char **envp)
 {
@@ -189,9 +93,10 @@ int main(int argc, char **argv, char **envp)
 	// {
 		// ast = create_node(ast);
 		// line = readline("> ");
-		line = ft_strdup("echo \"\\hello\"");
-		line = parsing(line, get_env);
-		printf("%s\n", line);
+		line = ft_strdup("echo_____hey_____hey");
+		pre_parse(line);
+		// line = parsing(line, get_env);
+		// printf("%s\n", line);
 	// }
 
 }
