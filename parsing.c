@@ -78,6 +78,19 @@ char	*slash_parse(char *line, int *i)
 	++(*i);
 	return (tmp);
 }
+char *skip_space(char *line, int *i)
+{
+	int j = *i;
+	char *tmp;
+	char *tmp1;
+	char *res;
+	while (line[j] == ' ')
+		j++;
+	tmp = ft_substr(line, 0, *i + 1);
+	tmp1 = ft_substr(line, j, ft_strlen(line));
+	res = ft_strjoin(tmp, tmp1);
+	return (res);
+}
 
 char	*parsing(char *line, char **get_env)
 {
@@ -94,6 +107,8 @@ char	*parsing(char *line, char **get_env)
 				line = double_quote_parse(line, &i, get_env);
 			if (line[i] == '$')
 				line = parse_dollar(line, &i, get_env);
+			if (line[i] == ' ')
+				line = skip_space(line, &i);
 	}
 	return (line);
 }

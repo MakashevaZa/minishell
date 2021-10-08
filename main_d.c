@@ -24,63 +24,58 @@ char **get_envp(char **envp)
 	return(data);
 }
 
-char *skip_space(char *line, int *i)
-{
-	int j = *i;
-	char *tmp;
-	char *tmp2;
-	char *tmp3;
-	char *res;
+enum built_in {
+	echo,
+	cd,
+	pwd,
+	export,
+	unset,
+	env,
+	// exit,
+};
 
-	// i = 0;
-	// while (line[*i] != ' ')
-	// 	*i++;
-	tmp = ft_substr(line, 0, j + 1);
-	while (line[*i] == '_')
-		(*i)++;
-	// tmp3 = ft_substr(line, )
-	tmp2 = ft_strdup(line + *i);
-	tmp = ft_strjoin(tmp, tmp2);
-	printf("res = %s\n", tmp);
-	return (tmp);
+int check_arg(char *arg)
+{
+	int i = 0;
+
+	if (ft_strcmp("echo", arg) == 0 || ft_strcmp("cd", arg) == 0
+		|| ft_strcmp("pwd", arg) == 0 || ft_strcmp("export", arg) == 0
+		|| ft_strcmp("unset", arg) == 0 || ft_strcmp("env", arg) == 0
+		|| ft_strcmp("exit", arg) == 0)
+		{
+			// ast = create_node;
+			return (1);
+		}
+	return (0);
 }
 
-void pre_parse(char *line)
+void get_args(char *line)
 {
 	int i;
-	char *tmp;
-	char *tmp2;
-	char *res;
+	char *arg;
+	t_ast *ast;
 
-	i = 0;
-	while (line[i])
+	i = -1;
+	while(line[++i])
 	{
-		if (line[i] == '_')
+		if (line[i] == ' ')
 		{
-			tmp = ft_substr(line, 0, i + 1);
-			while (line[i] == '_')
-				(i)++;
-	// tmp3 = ft_substr(line, )
-			tmp2 = ft_strdup(line + i);
-			line = ft_strjoin(tmp, tmp2);
-			printf("res = %s\n", tmp);
+			arg = ft_substr(line, 0, i);
+			if (check_arg(arg) == 1)
+				ast = create_node(arg);
+			printf("arg = %s\n", arg);
+			printf("%s\n", ast->value);
+			line = ft_strdup(line + i + 1);
+			printf("line = %s\n", line);
+			i = 0;
 		}
-			// line = skip_space(line, &i);
 		else
 			i++;
 	}
-	
 }
 
-// enum built_in {
-// 	echo,
-// 	cd,
-// 	pwd,
-// 	export,
-// 	unset,
-// 	env,
-// 	exit
-// };
+void *dfa(char *line)
+{}
 
 int main(int argc, char **argv, char **envp)
 {
@@ -89,14 +84,16 @@ int main(int argc, char **argv, char **envp)
 	// t_ast *ast;
 
 	get_env = get_envp(envp);
-	// while (1)
-	// {
+	while (1)
+	{
 		// ast = create_node(ast);
-		// line = readline("> ");
-		line = ft_strdup("echo_____hey_____hey");
-		pre_parse(line);
-		// line = parsing(line, get_env);
-		// printf("%s\n", line);
-	// }
+		line = readline("> ");
+		// line = ft_strdup("echo_____hey_____hey");
+		// pre_parse(line);
+		line = parsing(line, get_env);
+		// dfa(line);
+		get_args(line);
+		printf("%s\n", line);
+	}
 
 }
