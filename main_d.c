@@ -74,26 +74,29 @@ void get_args(char *line)
 	}
 }
 
-void *dfa(char *line)
-{}
+
 
 int main(int argc, char **argv, char **envp)
 {
 	char **get_env;
 	char *line;
+	// char **array;
 	// t_ast *ast;
+	t_cmd *list;
 
 	get_env = get_envp(envp);
-	while (1)
-	{
+	// array = (char **)malloc(sizeof(char *));
+	// while (1)
+	// {
 		// ast = create_node(ast);
-		line = readline("> ");
-		// line = ft_strdup("echo_____hey_____hey");
+		// line = readline("> ");
+		list = new_list();
+		line = ft_strdup("echo \'    $PWD\' > a");
 		// pre_parse(line);
-		line = parsing(line, get_env);
+		line = parsing(line, get_env, list);
 		// dfa(line);
-		get_args(line);
+		// get_args(line);
 		printf("%s\n", line);
-	}
+	// }
 
 }

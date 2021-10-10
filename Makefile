@@ -13,7 +13,7 @@ SOURCES =	main_d.c\
 			ast.c\
 			parsing.c\
 			dollar_parse.c\
-			
+			create_list.c\
 	
 
 OBJECTS_DIRECTORY = objects/

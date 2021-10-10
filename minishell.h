@@ -18,11 +18,20 @@ typedef struct s_ast
 }					t_ast;
 
 
+typedef struct s_cmd
+{
+	char			**args;
+	int				size;
+	int				pipe;
+	int				redir;
+	struct s_cmd	*next;
+}					t_cmd;
+
 //-------ast.c
-t_ast*	create_node(char *value);
+// t_ast*	create_node(char *value);
 
 //------parsing.c------//
-char	*parsing(char *line, char **get_env);
+char	*parsing(char *line, char **get_env, t_cmd *list);
 char	*single_quote_parse(char *line, int *i);
 int		check_char(char *line, char ch, int i);
 char	*double_quote_parse(char *line, int *i, char **get_env);
@@ -31,5 +40,9 @@ char	*slash_parse(char *line, int *i);
 //------dollar_parse.c------//
 char	*parse_dollar(char *line, int *i, char **get_env);
 int		if_key(char c);
+
+
+//------create_list.c------//
+t_cmd  *new_list(void);
 
 #endif
