@@ -44,14 +44,14 @@ t_cmd *get_args(char *line)
 	a = NULL;
 	while (line[i])
 	{
-		if (line[i] == ' ')
+		if (line[i] != ' ' && line[i + 1] == ' ')
 		{
-			tmp = ft_substr(line, 0, i);
+			tmp = ft_substr(line, 0, i + 1);
 			if (a == NULL)
 				a = new_list(tmp);
 			else
 				add_back(a, tmp);
-			line = ft_strdup(line + i + 1);
+			line = ft_strdup(line + i + 2);
 			i = 0;
 		}
 		else
@@ -87,7 +87,7 @@ int main(int argc, char **argv, char **envp)
 		// ast = create_node(ast);
 		// line = readline("> ");
 		// list = new_list();
-		line = ft_strdup("echo $PWD > a");
+		line = ft_strdup("echo hey > a");
 		// pre_parse(line);
 		line = parsing(line, get_env, list);
 		// dfa(line);
@@ -97,7 +97,12 @@ int main(int argc, char **argv, char **envp)
 			ast = insert_val(&ast, list->value);
 			list = list->next;
 		}
-		// printf("%s\n", line);
+		// while (list != NULL)
+		// {
+		// 	printf("value = |%s| prior = |%d|\n", list->value, list->prior);
+		// 	list = list->next;
+		// }
+		printf("%s\n", line);
 		print_tree_rec(ast, 0);
 	// }
 

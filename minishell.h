@@ -49,7 +49,7 @@ t_cmd  *new_list(char *arg);
 void	add_back(t_cmd *lst, char *value);
 
 
-t_ast*	insert_val(t_ast **ast, char *value);
+t_ast	insert_val(t_ast **ast, char *value);
  int check_arg(char *arg);
  void print_tree_rec(t_ast *ast, int level);
  

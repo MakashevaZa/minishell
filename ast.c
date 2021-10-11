@@ -56,7 +56,7 @@ void print_tree_rec(t_ast *ast, int level)
 	printf("done\n");
 }
 
-t_ast*	insert_val(t_ast **ast, char *value)
+t_ast	insert_val(t_ast **ast, char *value)
 {
 	t_ast *tmp;
 	int prior;
@@ -65,8 +65,11 @@ t_ast*	insert_val(t_ast **ast, char *value)
 	if (tmp == NULL)
 	{
 		*ast = create_node(value);
-		return (NULL);
+		return (&ast);
 	}
+	// if (value == tmp->value)
+	// 	return (0);
+
 	if (ft_strcmp(value, ">") == 0 || ft_strcmp(value, "<") == 0)
         prior = 3;
     else if (ft_strcmp(value, "|") == 0 )
@@ -89,10 +92,10 @@ t_ast*	insert_val(t_ast **ast, char *value)
 // {
 // 	t_ast *ast = NULL;
 
-// 	insert_val(&ast, "echo");
-// 	insert_val(&ast, "hey");
-// 	insert_val(&ast, ">");
-// 	insert_val(&ast, "a");
+// 	insert_val(ast, "echo");
+// 	insert_val(ast, "hey");
+// 	insert_val(ast, ">");
+// 	insert_val(ast, "a");
 // 	// insert_val(&ast, ">", 2);
 // 	// insert_val(&ast, "|", 1);
 	
