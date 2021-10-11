@@ -20,11 +20,13 @@ typedef struct s_ast
 
 typedef struct s_cmd
 {
-	char			**args;
-	int				size;
-	int				pipe;
-	int				redir;
+	char			*value;
+	int 			prior;
+	// int				size;
+	// int				pipe;
+	// int				redir;
 	struct s_cmd	*next;
+	struct s_cmd	*prev;
 }					t_cmd;
 
 //-------ast.c
@@ -43,6 +45,12 @@ int		if_key(char c);
 
 
 //------create_list.c------//
-t_cmd  *new_list(void);
+t_cmd  *new_list(char *arg);
+void	add_back(t_cmd *lst, char *value);
 
+
+t_ast*	insert_val(t_ast **ast, char *value);
+ int check_arg(char *arg);
+ void print_tree_rec(t_ast *ast, int level);
+ 
 #endif

@@ -34,44 +34,39 @@ enum built_in {
 	// exit,
 };
 
-int check_arg(char *arg)
+
+t_cmd *get_args(char *line)
 {
+	char *tmp;
+	t_cmd *a;
+
 	int i = 0;
-
-	if (ft_strcmp("echo", arg) == 0 || ft_strcmp("cd", arg) == 0
-		|| ft_strcmp("pwd", arg) == 0 || ft_strcmp("export", arg) == 0
-		|| ft_strcmp("unset", arg) == 0 || ft_strcmp("env", arg) == 0
-		|| ft_strcmp("exit", arg) == 0)
-		{
-			// ast = create_node;
-			return (1);
-		}
-	return (0);
-}
-
-void get_args(char *line)
-{
-	int i;
-	char *arg;
-	t_ast *ast;
-
-	i = -1;
-	while(line[++i])
+	a = NULL;
+	while (line[i])
 	{
 		if (line[i] == ' ')
 		{
-			arg = ft_substr(line, 0, i);
-			if (check_arg(arg) == 1)
-				ast = create_node(arg);
-			printf("arg = %s\n", arg);
-			printf("%s\n", ast->value);
+			tmp = ft_substr(line, 0, i);
+			if (a == NULL)
+				a = new_list(tmp);
+			else
+				add_back(a, tmp);
 			line = ft_strdup(line + i + 1);
-			printf("line = %s\n", line);
 			i = 0;
 		}
 		else
 			i++;
 	}
+	if (a == NULL)
+		a = new_list(line);
+	else
+		add_back(a, line);
+	// while (a != NULL)
+	// {
+	// 	printf("a->value = %s a->prior = %d\n", a->value, a->prior);
+	// 	a = a->next;
+	// }
+	return (a);
 }
 
 
@@ -81,8 +76,9 @@ int main(int argc, char **argv, char **envp)
 	char **get_env;
 	char *line;
 	// char **array;
-	// t_ast *ast;
+	t_ast *ast;
 	t_cmd *list;
+	list = NULL;
 
 	get_env = get_envp(envp);
 	// array = (char **)malloc(sizeof(char *));
@@ -90,13 +86,19 @@ int main(int argc, char **argv, char **envp)
 	// {
 		// ast = create_node(ast);
 		// line = readline("> ");
-		list = new_list();
-		line = ft_strdup("echo \'    $PWD\' > a");
+		// list = new_list();
+		line = ft_strdup("echo $PWD > a");
 		// pre_parse(line);
 		line = parsing(line, get_env, list);
 		// dfa(line);
-		// get_args(line);
-		printf("%s\n", line);
+		list = get_args(line);
+		while (list != NULL)
+		{
+			ast = insert_val(&ast, list->value);
+			list = list->next;
+		}
+		// printf("%s\n", line);
+		print_tree_rec(ast, 0);
 	// }
 
 }

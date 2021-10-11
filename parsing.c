@@ -25,11 +25,11 @@ char	*single_quote_parse(char *line, int *i)
 				break ;
 		}
 		tmp = ft_substr(line, 0, j);
-		printf("tmp = %s|\n", tmp);
+		// printf("tmp = %s|\n", tmp);
 		tmp2 = ft_substr(line, j + 1,  *i - j - 1);
-		printf("tmp2 = %s|\n", tmp2);
+		// printf("tmp2 = %s|\n", tmp2);
 		tmp3 = ft_strdup(line + *i + 1);
-		printf("tmp3 = %s|\n", tmp3);
+		// printf("tmp3 = %s|\n", tmp3);
 
 		tmp = ft_strjoin(tmp, tmp2);
 		tmp = ft_strjoin(tmp, tmp3);
@@ -82,21 +82,16 @@ char	*slash_parse(char *line, int *i)
 	++(*i);
 	return (tmp);
 }
-char *skip_space(char *line, int *i, t_cmd **list)
+char *skip_space(char *line, int *i)
 {
 	int j = *i;
 	char *tmp;
 	char *tmp1;
 	char *res;
-	// int n = (*list)->size;
-
 
 	while (line[j] == ' ')
 		j++;
 	tmp = ft_substr(line, 0, *i + 1);
-	// (*list)->args[n] = tmp;
-	// (*list)->size++;
-	// printf("tmp = %s|\n", list->args[n]);
 	tmp1 = ft_substr(line, j, ft_strlen(line));
 	res = ft_strjoin(tmp, tmp1);
 	return (res);
@@ -118,8 +113,8 @@ char	*parsing(char *line, char **get_env, t_cmd *list)
 			if (line[i] == '$')
 				line = parse_dollar(line, &i, get_env);
 			if (line[i] == ' ')
-				line = skip_space(line, &i, &list);
+				line = skip_space(line, &i);
 	}
-			printf("list = %s\n", list->args[0]);
+			// printf("list = %s\n", list->args[0]);
 	return (line);
 }

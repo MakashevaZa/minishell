@@ -10,12 +10,16 @@ t_ast*	create_node(char *value)
 		node->left = NULL;
 		node->right = NULL;
 		node->value = value;
-		if (ft_strcmp(value, ">") == 0)
+		if (ft_strcmp(value, ">") == 0 || ft_strcmp(value, "<") == 0)
+        	node->prior = 3;
+		else if (ft_strcmp(value, "|") == 0 )
 			node->prior = 2;
-		if (ft_strcmp(value, "|") == 0)
+		else if (check_arg(value))
 			node->prior = 1;
 		else
+		{
 			node->prior = 0;
+		}
 	}
 	return (node);
 }
@@ -63,14 +67,16 @@ t_ast*	insert_val(t_ast **ast, char *value)
 		*ast = create_node(value);
 		return (NULL);
 	}
-	// if (value == tmp->value)
-	// 	return NULL;
-	if (ft_strcmp(value, ">") == 0)
-		prior = 2;
-	else if (ft_strcmp(value, "|") == 0)
-		prior = 1;
-	else
-		prior = 0;
+	if (ft_strcmp(value, ">") == 0 || ft_strcmp(value, "<") == 0)
+        prior = 3;
+    else if (ft_strcmp(value, "|") == 0 )
+        prior = 2;
+    else if (check_arg(value))
+        prior = 1;
+    else
+    {
+        prior = 0;
+    }
 	if (prior < tmp->prior)
 		return (insert_val(&(tmp->left), value));
 	else
