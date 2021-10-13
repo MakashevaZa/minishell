@@ -82,27 +82,41 @@ char	*slash_parse(char *line, int *i)
 	++(*i);
 	return (tmp);
 }
-char *skip_space(char *line, int *i)
-{
-	int j = *i;
-	char *tmp;
-	char *tmp1;
-	char *res;
 
-	while (line[j] == ' ')
-		j++;
-	tmp = ft_substr(line, 0, *i + 1);
-	// printf("tmp = |%s|\n", tmp);
-	tmp1 = ft_substr(line, j, ft_strlen(line));
-	// printf("tmp1 = |%s|\n", tmp1);
-	res = ft_strjoin(tmp, tmp1);
-	return (res);
+int skip_space(char *line, int *i)
+{
+	// int i = 0;
+	while (line[*i] == ' ')
+		(*i)++;
+	return (*i);
 }
+
+// char *skip_space(char *line, int *i, t_cmd *list)
+// {
+// 	int j = *i;
+// 	char *tmp;
+// 	char *tmp1;
+// 	char *res;
+
+// 	while (line[j] == ' ')
+// 		j++;
+// 	tmp = ft_substr(line, 0, *i);
+// 	if (list == NULL)
+// 		list = new_list(tmp);
+// 	else
+// 		add_back(list, tmp);
+// 	// printf("tmp = |%s|\n", tmp);
+// 	tmp1 = ft_substr(line, j, ft_strlen(line));
+// 	// printf("tmp1 = |%s|\n", tmp1);
+// 	res = ft_strjoin(tmp, tmp1);
+// 	return (tmp1);
+// }
 
 char	*parsing(char *line, char **get_env)
 {
 	int i;
-
+	t_cmd *list = NULL;
+	// int k = 0;
 	i = -1;
 	while (line[++i])
 	{
@@ -115,8 +129,22 @@ char	*parsing(char *line, char **get_env)
 			if (line[i] == '$')
 				line = parse_dollar(line, &i, get_env);
 			if (line[i] == ' ')
-				line = skip_space(line, &i);
+			{
+				// k = skip_space(line);
+				if (list == NULL)
+					list = new_list(ft_substr(line, 0, i));
+				else
+					add_back(list, ft_substr(line, 0, i));
+				line = ft_substr(line, skip_space(line, &i), ft_strlen(line));
+				i = -1;
+			}
 	}
+	add_back(list, line);
 			// printf("list = %s\n", list->args[0]);
+			while (list != NULL)
+		{
+			printf("value = |%s| prior = |%d|\n", list->value, list->prior);
+			list = list->next;
+		}
 	return (line);
 }

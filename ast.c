@@ -56,35 +56,77 @@ void print_tree_rec(t_ast *ast, int level)
 	printf("done\n");
 }
 
-t_ast	insert_val(t_ast **ast, char *value)
+// t_ast*	insert_val(t_ast **ast, char *value)
+// {
+// 	t_ast *tmp;
+// 	int prior;
+
+// 	tmp = *ast;
+// 	if (tmp == NULL)
+// 	{
+// 		*ast = create_node(value);
+// 		return (ast);
+// 	}
+// 	// if (value == tmp->value)
+// 	// 	return (0);
+
+// 	if (ft_strcmp(value, ">") == 0 || ft_strcmp(value, "<") == 0)
+//         prior = 3;
+//     else if (ft_strcmp(value, "|") == 0 )
+//         prior = 2;
+//     else if (check_arg(value))
+//         prior = 1;
+//     else
+//     {
+//         prior = 0;
+//     }
+// 	if (prior < tmp->prior)
+// 		return (insert_val(&(tmp->left), value));
+// 	else
+// 		return (insert_val(&(tmp->right), value));
+		
+// }
+
+void	add_value(t_ast **ast, char *value)
 {
 	t_ast *tmp;
 	int prior;
 
-	tmp = *ast;
-	if (tmp == NULL)
-	{
-		*ast = create_node(value);
-		return (&ast);
-	}
-	// if (value == tmp->value)
-	// 	return (0);
-
 	if (ft_strcmp(value, ">") == 0 || ft_strcmp(value, "<") == 0)
         prior = 3;
-    else if (ft_strcmp(value, "|") == 0 )
-        prior = 2;
-    else if (check_arg(value))
-        prior = 1;
-    else
-    {
-        prior = 0;
-    }
-	if (prior < tmp->prior)
-		return (insert_val(&(tmp->left), value));
+	else if (ft_strcmp(value, "|") == 0 )
+		prior = 2;
+	else if (check_arg(value))
+		prior = 1;
 	else
-		return (insert_val(&(tmp->right), value));
-		
+		prior = 0;
+	// tmp = (t_ast *)malloc(sizeof(t_ast));
+	// if (tmp != NULL)
+	// {
+		if ((*ast)->prior == 3 && prior == 0)
+			(*ast)->right = create_node(value);
+		else if ((*ast)->prior > prior)
+		{
+			// tmp = *ast;
+			// while(tmp->left != NULL)
+			// 	tmp = tmp->left;
+			// tmp->left = create_node(value);
+			// (*ast)->left = tmp->left;
+			while ((*ast)->left != NULL)
+				(*ast) = (*ast)->left;
+			(*ast)->left = create_node(value);
+		}
+		else
+		{
+			tmp = create_node(value);
+			tmp->left = *ast;
+			*ast = tmp;
+			// tmp->value = value;
+			// tmp->right = NULL;
+			// tmp->left = *ast;
+			// *ast = tmp;
+		}
+	// }
 }
 
 
