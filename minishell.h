@@ -14,6 +14,8 @@ typedef struct s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 	char			*value;
+	// char			*command;
+	// char			**args;
 	int				prior;
 }					t_ast;
 

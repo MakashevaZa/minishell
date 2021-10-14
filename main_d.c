@@ -98,31 +98,31 @@ int main(int argc, char **argv, char **envp)
 	ast = NULL;
 	get_env = get_envp(envp);
 	// array = (char **)malloc(sizeof(char *));
-	// while (1)
-	// {
+	while (1)
+	{
 		// ast = create_node(ast);
-		// line = readline("> ");
+		line = readline("> ");
 		// list = new_list();
-		line = ft_strdup("echo hey there > a");
+		// line = ft_strdup("echo hello world > a | wc");
 		// pre_parse(line);
 		line = parsing(line, get_env);
 		// dfa(line);
-		list = get_args(line);
-		while (list != NULL)
-		{
-			if (ast == NULL)
-				ast = create_node(list->value);
-			else
-				add_value(&ast, list->value);
-			list = list->next;
-		}
+		// list = get_args(line);
+		// while (list != NULL)
+		// {
+		// 	if (ast == NULL)
+		// 		ast = create_node(list->value);
+		// 	else
+		// 		add_value(&ast, list->value);
+		// 	list = list->next;
+		// }
 		// while (list != NULL)
 		// {
 		// 	printf("value = |%s| prior = |%d|\n", list->value, list->prior);
 		// 	list = list->next;
 		// }
 		printf("%s\n", line);
-		print_tree_rec(ast, 0);
-	// }
+		// print_tree_rec(ast, 0);
+	}
 
 }
