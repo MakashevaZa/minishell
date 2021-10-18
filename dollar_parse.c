@@ -7,7 +7,7 @@ int	if_key(char c)
 	return (0);
 }
 
-char	*parse_dollar(char *line, int *i, char **get_env)
+char	*parse_dollar(char *line, int *i, char **get_env, t_ast **ast)
 {
 	int j = *i;
 	char *tmp;

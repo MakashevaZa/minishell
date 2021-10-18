@@ -20,7 +20,6 @@ char **get_envp(char **envp)
 		data[i] = ft_strdup(envp[i]);
 		i++;
 	}
-	// data[i] = NULL;
 	return(data);
 }
 
@@ -52,7 +51,6 @@ t_cmd *get_args(char *line)
 			else
 				add_back(a, tmp);
 			line = ft_strdup(line + i + 2);
-			// printf("line = %s|\n", line);
 			i = 0;
 		}
 		// else if (line[i] == '>' || line[i] == '<')
@@ -90,39 +88,19 @@ int main(int argc, char **argv, char **envp)
 {
 	char **get_env;
 	char *line;
-	// char **array;
 	t_ast *ast;
 	t_cmd *list;
 	list = NULL;
 
 	ast = NULL;
 	get_env = get_envp(envp);
-	// array = (char **)malloc(sizeof(char *));
 	while (1)
 	{
-		// ast = create_node(ast);
 		line = readline("> ");
-		// list = new_list();
-		// line = ft_strdup("echo hello world > a | wc");
-		// pre_parse(line);
-		line = parsing(line, get_env);
-		// dfa(line);
-		// list = get_args(line);
-		// while (list != NULL)
-		// {
-		// 	if (ast == NULL)
-		// 		ast = create_node(list->value);
-		// 	else
-		// 		add_value(&ast, list->value);
-		// 	list = list->next;
-		// }
-		// while (list != NULL)
-		// {
-		// 	printf("value = |%s| prior = |%d|\n", list->value, list->prior);
-		// 	list = list->next;
-		// }
+		// line = ft_strdup("echo hello");
+		ast = parsing(line, get_env);
 		printf("%s\n", line);
-		// print_tree_rec(ast, 0);
+		print_tree_rec(ast, 0);
 	}
 
 }
