@@ -1,5 +1,20 @@
 #include "minishell.h"
 
+t_ast*	create_first_node(char *value)
+{
+	t_ast* node;
+
+	node = (t_ast *)malloc(sizeof(t_ast));
+	if (node != NULL)
+	{
+		node->left = NULL;
+		node->right = NULL;
+		node->value = value;
+		node->prior = 1;
+	}
+	return (node);
+}
+
 t_ast*	create_node(char *value)
 {
 	t_ast* node;
@@ -14,12 +29,8 @@ t_ast*	create_node(char *value)
         	node->prior = 3;
 		else if (ft_strcmp(value, "|") == 0 )
 			node->prior = 2;
-		else if (check_arg(value))
-			node->prior = 1;
 		else
-		{
 			node->prior = 0;
-		}
 	}
 	return (node);
 }
@@ -43,7 +54,7 @@ void print_tree_rec(t_ast *ast, int level)
 		return ;
 	}
 	printtabs(level);
-	printf("value = %s\n", ast->value);
+	printf("|value = |%s|  prior = |%d|\n ", ast->value, ast->prior);
 	printtabs(level);
 
 	printf("left\n");
@@ -55,37 +66,6 @@ void print_tree_rec(t_ast *ast, int level)
 	printtabs(level);
 	printf("done\n");
 }
-
-// t_ast*	insert_val(t_ast **ast, char *value)
-// {
-// 	t_ast *tmp;
-// 	int prior;
-
-// 	tmp = *ast;
-// 	if (tmp == NULL)
-// 	{
-// 		*ast = create_node(value);
-// 		return (ast);
-// 	}
-// 	// if (value == tmp->value)
-// 	// 	return (0);
-
-// 	if (ft_strcmp(value, ">") == 0 || ft_strcmp(value, "<") == 0)
-//         prior = 3;
-//     else if (ft_strcmp(value, "|") == 0 )
-//         prior = 2;
-//     else if (check_arg(value))
-//         prior = 1;
-//     else
-//     {
-//         prior = 0;
-//     }
-// 	if (prior < tmp->prior)
-// 		return (insert_val(&(tmp->left), value));
-// 	else
-// 		return (insert_val(&(tmp->right), value));
-		
-// }
 
 void insert_left(t_ast **ast, char *value)
 {
@@ -110,7 +90,6 @@ void insert_left(t_ast **ast, char *value)
 			tmp->prior = 0;
 		}
 		(*ast) = tmp;
-		// return ;
 	}
 }
 
@@ -140,41 +119,11 @@ void	add_value(t_ast **ast, char *value)
 	else if ((*ast)->prior > prior)
 	{
 		insert_left(&(*ast)->left,value);
-			// tmp = *ast;
-			// while(tmp->left != NULL)
-			// 	tmp = tmp->left;
-			// tmp = create_node(value);
-			// (*ast)->left = tmp;
-			// while ((*ast)->left != NULL)
-			// 	(*ast) = (*ast)->left;
-			// (*ast)->left = create_node(value);
 	}
 		else
 		{
 			tmp = create_node(value);
 			tmp->left = *ast;
 			*ast = tmp;
-			// tmp->value = value;
-			// tmp->right = NULL;
-			// tmp->left = *ast;
-			// *ast = tmp;
 		}
-	// }
 }
-
-
-// int main()
-// {
-// 	t_ast *ast = NULL;
-
-// 	insert_val(ast, "echo");
-// 	insert_val(ast, "hey");
-// 	insert_val(ast, ">");
-// 	insert_val(ast, "a");
-// 	// insert_val(&ast, ">", 2);
-// 	// insert_val(&ast, "|", 1);
-	
-// 	print_tree_rec(ast, 0);
-
-// 	return (0);
-// }

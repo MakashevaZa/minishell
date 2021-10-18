@@ -7,7 +7,7 @@ int	if_key(char c)
 	return (0);
 }
 
-char	*parse_dollar(char *line, int *i, char **get_env)
+char	*parse_dollar(char *line, int *i, char **get_env, t_ast **ast)
 {
 	int j = *i;
 	char *tmp;
@@ -34,10 +34,18 @@ char	*parse_dollar(char *line, int *i, char **get_env)
 		if (ft_strcmp(tmp, tmp2) == 0)
 			break ;
 	}
-	tmp1 = ft_substr(get_env[k], z + 1, ft_strlen(get_env[k]) - z);
-	tmp3 = ft_substr(line, 0, j);
-	tmp4 = ft_substr(line, *i, ft_strlen(line));
-	res = ft_strjoin(tmp3, tmp1);
-	res = ft_strjoin(res, tmp4);
-	return (res);
+	tmp1 = ft_substr(get_env[k], z, ft_strlen(get_env[k]) - z);
+	printf("tmp1 || = |%s|\n", tmp1);
+	// tmp3 = ft_substr(line, 0, j);
+	// printf("tmp3 = |%s|\n", tmp3);
+	tmp4 = ft_substr(line, *i + 1, ft_strlen(line));
+	printf("tmp4 = |%s|\n", tmp4);
+	// res = ft_strjoin(tmp1, tmp4);
+	// printf("res = %s\n", res);
+	// res = ft_strjoin(res, tmp4);
+	if (*ast == NULL)
+			*ast = create_first_node(tmp);
+		else
+			add_value(ast, tmp);
+	return (tmp4);
 } 

@@ -36,14 +36,15 @@ typedef struct s_cmd
 
 //------parsing.c------//
 
-char	*parsing(char *line, char **get_env);
-char	*single_quote_parse(char *line, int *i);
+t_ast	*parsing(char *line, char **get_env);
+// char	*parsing(char *line, char **get_env);
+// char	*single_quote_parse(char *line, int *i);
 int		check_char(char *line, char ch, int i);
-char	*double_quote_parse(char *line, int *i, char **get_env);
+// char	*double_quote_parse(char *line, int *i, char **get_env);
 char	*slash_parse(char *line, int *i);
 
 //------dollar_parse.c------//
-char	*parse_dollar(char *line, int *i, char **get_env);
+char	*parse_dollar(char *line, int *i, char **get_env, t_ast **ast);
 int		if_key(char c);
 
 
@@ -56,6 +57,6 @@ t_ast*	insert_val(t_ast **ast, char *value);
  int check_arg(char *arg);
  void print_tree_rec(t_ast *ast, int level);
  t_ast*	create_node(char *value);
- void	add_value(t_ast **ast, char *value);
- 
+ t_ast*	create_first_node(char *value);
+void	add_value(t_ast **ast, char *value); 
 #endif
