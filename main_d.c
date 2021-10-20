@@ -82,26 +82,59 @@ t_cmd *get_args(char *line)
 	return (a);
 }
 
+char **array_init(char *line)
+{
+	char **array;
+	int j;
+	int ind;
+	char *tmp;
+	int i = -1;
 
+	ind = 0;
+	j = 0;
+	while (line[++i])
+	{
+		if (line[i] == '>' || line[i] == '<' || line[i] == '|')
+		{
+			tmp = ft_substr(line, 0, i);
+			printf("tmp = %s\n", tmp);
+		}
+	}
+	array = (char **)malloc(sizeof(char *) * ft_strlen(tmp));
+	if (!array)
+		return (NULL);
+	while (tmp[j])
+	{
+		if (tmp[j] == ' ')
+		{
+			array[ind] = ft_substr(tmp, 0, j);
+			tmp = ft_substr(tmp, j + 1, ft_strlen(tmp) - j);
+			printf("array[i] = %s\n", array[ind]);
+			ind++;
+			j = -1;
+		}
+		j++;
+	}
+	return (array);
+}
 
 int main(int argc, char **argv, char **envp)
 {
 	char **get_env;
 	char *line;
 	t_ast *ast;
-	t_cmd *list;
-	list = NULL;
+	char **array;
 
 	ast = NULL;
 	get_env = get_envp(envp);
 	// while (1)
-	// {
+	// {d
 		// line = readline("> ");
-		line = ft_strdup("echo $PWD >  a > b");
+		line = ft_strdup("ec\'ho he\'llo > a");
+		array = array_init(line);
 		ast = parsing(line, get_env);
 		printf("%s\n", line);
-		// print_tree_rec(ast, 0);
-		search(ast);
+		print_tree_rec(ast, 0);
 	// }
 
 }

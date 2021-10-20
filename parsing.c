@@ -30,6 +30,7 @@ char *single_quote_parse(char *line, int *i, t_ast **ast)
 	char *tmp;
 	char *tmp2;
 	char *tmp3;
+
 	if (check_char(line, '\'', j + 1) == 1)
 	{
 		while (line[++(*i)])
@@ -42,8 +43,9 @@ char *single_quote_parse(char *line, int *i, t_ast **ast)
 		tmp = ft_strjoin(tmp, tmp2);
 		tmp3 = ft_strdup(line + *i + 1);
 		tmp3 = ft_strjoin(tmp, tmp3);
+		return (tmp3);
 	}
-	return (tmp3);
+	return (line);
 }
 
 char	*double_quote_parse(char *line, int *i, char **get_env, t_ast **ast)
@@ -105,6 +107,7 @@ char *skip_space(char *line, int *i,  t_ast **ast, char **get_env)
 		*ast = create_first_node(tmp1, tmp);
 	else
 		add_value(ast, tmp1);
+	// printf("tmp1 = %s\n", tmp1);
 	return (tmp1);
 }
 
@@ -118,9 +121,22 @@ char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env)
 	tmp = ft_substr(line, 0, j);
 	while(tmp[++k])
 	{
+		if (tmp[k] == '\"')
+			tmp = double_quote_parse(tmp, &k, get_env, ast);
+		if (tmp[k] == '\'')
+			tmp = single_quote_parse(tmp, &k, ast);
+		if (tmp[k] == '$')
+			tmp = parse_dollar(tmp, &k, get_env, ast);
+		if (tmp[k] == '\\')
+			tmp = slash_parse(tmp, &k);
 		if (tmp[k] == ' ')
+		{
 			tmp = skip_space(tmp, &k, ast, get_env);
+			break ;
+		}
 	}
+	if (tmp[k] == '\0')
+		add_value(ast, tmp);
 	line = ft_strdup(line + j);
 	j = 0;
 	if (line[j + 1] == '>' || line[j + 1] == '<')
@@ -137,19 +153,26 @@ char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env)
 
 }
 
+
+
 t_ast	*parsing(char *line, char **get_env)
 {
 	int i;
 	int j = -1;
 	t_ast *ast;
 	char *tmp;
+	char **array;
 	
 	i = -1;
 	ast = NULL;
+
 	while (line[++i])
 	{
 		if (line[i] == '>' || line[i] == '<' || line[i] == '|'){
+			// printf("line1 = %s\n", line);
+			// array = array_init(line, &i);
 			line = redirect_parse(line, &ast, &i, get_env);
+			// printf("line = %s\n", line);
 			i = -1;
 		}
 	}
@@ -161,9 +184,19 @@ t_ast	*parsing(char *line, char **get_env)
 		i = -1;
 		while (line[++i])
 		{
+			if (line[i] == '\"')
+				line = double_quote_parse(line, &i, get_env, &ast);
+			if (line[i] == '\'')
+				line = single_quote_parse(line, &i, &ast);
+			if (line[i] == '$')
+				line = parse_dollar(line, &i, get_env, &ast);
+			if (line[i] == '\\')
+				line = slash_parse(tmp, &i);
 			if (line[i] == ' ')
 				line = skip_space(line, &i, &ast, get_env);
 		}
+		if (ast == NULL)
+			ast = create_node(line);
 	}
 	else
 		add_value(&ast, line);
