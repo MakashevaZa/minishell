@@ -153,15 +153,17 @@ t_ast	*parsing(char *line, char **get_env)
 			i = -1;
 		}
 	}
+	i = 0;
+	if (line[i] == ' ')
+		line = ft_substr(line, 1, ft_strlen(line) - 1);
 	if (ast == NULL)
 	{
 		i = -1;
 		while (line[++i])
 		{
 			if (line[i] == ' ')
-				line = skip_space(line, &i, ast, get_env);
+				line = skip_space(line, &i, &ast, get_env);
 		}
-		// ast = create_node(line);
 	}
 	else
 		add_value(&ast, line);

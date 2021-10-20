@@ -59,4 +59,5 @@ t_ast*	insert_val(t_ast **ast, char *value);
  t_ast*	create_node(char *value);
  t_ast*	create_first_node(char *value, char *command);
 void	add_value(t_ast **ast, char *value); 
+t_ast search(t_ast *ast);
 #endif

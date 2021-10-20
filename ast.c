@@ -57,7 +57,7 @@ void print_tree_rec(t_ast *ast, int level)
 		return ;
 	}
 	printtabs(level);
-	printf("value = %s command = |%s| prior = |%d|\n ", ast->value, ast->command, ast->prior);
+	printf("value = |%s| command = |%s| prior = |%d|\n ", ast->value, ast->command, ast->prior);
 	printtabs(level);
 
 	printf("left\n");
@@ -131,4 +131,13 @@ void	add_value(t_ast **ast, char *value)
 			tmp->left = *ast;
 			*ast = tmp;
 		}
+}
+
+t_ast search(t_ast *ast)
+{
+	// if (ast == NULL)
+	// 	return (ast);
+	if (ast->left != NULL && ast->prior >= ast->left->prior)
+		search(ast->left);
+	
 }

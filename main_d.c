@@ -94,13 +94,14 @@ int main(int argc, char **argv, char **envp)
 
 	ast = NULL;
 	get_env = get_envp(envp);
-	while (1)
-	{
-		line = readline("> ");
-		// line = ft_strdup("echo hello");
+	// while (1)
+	// {
+		// line = readline("> ");
+		line = ft_strdup("echo $PWD >  a > b");
 		ast = parsing(line, get_env);
 		printf("%s\n", line);
-		print_tree_rec(ast, 0);
-	}
+		// print_tree_rec(ast, 0);
+		search(ast);
+	// }
 
 }
