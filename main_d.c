@@ -97,6 +97,7 @@ char **array_init(char *line)
 		if (line[i] == '>' || line[i] == '<' || line[i] == '|')
 		{
 			tmp = ft_substr(line, 0, i);
+			break ;
 			printf("tmp = %s\n", tmp);
 		}
 	}
@@ -122,19 +123,20 @@ int main(int argc, char **argv, char **envp)
 {
 	char **get_env;
 	char *line;
-	t_ast *ast;
+	// t_ast *ast;
 	char **array;
 
-	ast = NULL;
+
+	// ast = NULL;
 	get_env = get_envp(envp);
 	// while (1)
 	// {d
 		// line = readline("> ");
-		line = ft_strdup("ec\'ho he\'llo > a");
+		line = ft_strdup("echo < test > test2");
 		array = array_init(line);
-		ast = parsing(line, get_env);
+		parsing(line, get_env);
 		printf("%s\n", line);
-		print_tree_rec(ast, 0);
+		// print_tree_rec(ast, 0);
 	// }
 
 }

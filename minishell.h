@@ -36,7 +36,7 @@ typedef struct s_cmd
 
 //------parsing.c------//
 
-t_ast	*parsing(char *line, char **get_env);
+void	*parsing(char *line, char **get_env);
 // char	*parsing(char *line, char **get_env);
 // char	*single_quote_parse(char *line, int *i);
 int		check_char(char *line, char ch, int i);

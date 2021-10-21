@@ -135,8 +135,8 @@ char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env)
 			break ;
 		}
 	}
-	if (tmp[k] == '\0')
-		add_value(ast, tmp);
+	// if (tmp[k] == '\0')
+	// 	add_value(ast, tmp);
 	line = ft_strdup(line + j);
 	j = 0;
 	if (line[j + 1] == '>' || line[j + 1] == '<')
@@ -155,7 +155,7 @@ char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env)
 
 
 
-t_ast	*parsing(char *line, char **get_env)
+void	*parsing(char *line, char **get_env)
 {
 	int i;
 	int j = -1;
@@ -200,6 +200,8 @@ t_ast	*parsing(char *line, char **get_env)
 	}
 	else
 		add_value(&ast, line);
-	return (ast);
+	print_tree_rec(ast, 0);
+
+	// return (ast);
 }
 
