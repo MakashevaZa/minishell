@@ -20,16 +20,15 @@ typedef struct s_ast
 }					t_ast;
 
 
-typedef struct s_cmd
+typedef struct s_data
 {
-	char			*value;
-	int 			prior;
-	// int				size;
-	// int				pipe;
-	// int				redir;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
-}					t_cmd;
+	t_list	*env;
+	int		pid;
+	int		fd_out;
+	int		fd_in;
+	int		view;
+}			t_data;
+
 
 //-------ast.c
 // t_ast*	create_node(char *value);

@@ -121,13 +121,12 @@ char **array_init(char *line)
 
 int main(int argc, char **argv, char **envp)
 {
-	char **get_env;
-	char *line;
-	// t_ast *ast;
-	char **array;
+	char	**get_env;
+	char	*line;
+	char	**array;
+	t_data	*data;
 
-
-	// ast = NULL;
+	data = create_data(env, argc, argv);
 	get_env = get_envp(envp);
 	// while (1)
 	// {d
