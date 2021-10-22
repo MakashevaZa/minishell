@@ -31,6 +31,14 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 }					t_cmd;
 
+
+typedef struct s_env
+{
+  char          *key;
+  char          *value;
+  struct s_env  *next;
+} t_env;
+
 //-------ast.c
 // t_ast*	create_node(char *value);
 
@@ -60,4 +68,38 @@ t_ast*	insert_val(t_ast **ast, char *value);
  t_ast*	create_first_node(char *value, char *command);
 void	add_value(t_ast **ast, char *value); 
 t_ast search(t_ast *ast);
+
+/* -- builtins -- */
+
+void env_builtin(t_env *start);
+void echo_builtin(char **cmd);
+void pwd_builtin();
+void cd_builtin(char **cmd, t_env **env_list);
+void exit_builtin();
+void export_builtin(char **cmd_array, t_env **env_list);
+void unset_builtin(char **cmd_array, t_env **env_list);
+
+/* -- env funcs -- */
+
+char	**ft_split_env(char const *s, char c);
+void print_export_list(t_env *start);
+void ft_swap(t_env **start, t_env *a, t_env *b);
+void bubbleSort(t_env **start);
+t_env	*ft_lastnode(t_env *lst);
+int create_env_node(t_env **lst, char **d);
+t_env *env_init(char **env);
+t_env *env_cpy(t_env *head);
+void free_env(t_env *head);
+int export_pair_isok(char *pair);
+t_env *env_exists(t_env **env_list, char *key);
+void change_envlist(char *new_env, t_env **env_list);
+void delete_env(t_env *deleted, t_env **env_list);
+int unset_arg_isok(char *arg);
+
+/* -- may be added to the lib -- */
+
+int	ft_strequal(const char *str1, const char *str2);
+size_t	ft_arraylen(char **str);
+void free_array(char **str);
+
 #endif
