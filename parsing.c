@@ -144,6 +144,7 @@ char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env)
 			}
 			else
 			{
+				printf("substr = %s\n", ft_substr(line, 0, j + 1));
 				if (*ast == NULL){
 					*ast = create_node(tmp);
 					add_value(ast, ft_substr(line, 0, j + 1));
@@ -151,13 +152,14 @@ char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env)
 				else
 				{
 					add_value(ast, tmp);
-					add_value(ast, ft_strdup(line + j + 1));
+					add_value(ast, ft_substr(line, 0, j + 1));
 				}
 				// line = ft_strdup(line + j + 2);
 				// add_value(ast, tmp);
 				// add_value(ast, ft_substr(line, 0, j + 1));
 				line = ft_strdup(line + j + 1);
 			}
+			printf("%s\n", line);
 
 	return (line);
 
