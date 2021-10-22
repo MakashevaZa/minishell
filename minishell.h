@@ -9,28 +9,6 @@
 
 #include <unistd.h>
 
-typedef struct s_ast
-{
-	struct s_ast	*left;
-	struct s_ast	*right;
-	char			*value;
-	char			*command;
-	// char			**args;
-	int				prior;
-}					t_ast;
-
-
-typedef struct s_data
-{
-	t_list	*env;
-	int		pid;
-	int		fd_out;
-	int		fd_in;
-	int		view;
-}			t_data;
-
-
-
 typedef struct s_env
 {
   char          *key;
@@ -38,26 +16,49 @@ typedef struct s_env
   struct s_env  *next;
 } t_env;
 
+typedef struct s_ast
+{
+	struct s_ast	*left;
+	struct s_ast	*right;
+	char			*value;
+	// char			*command;
+	// char			**args;
+	int				prior;
+}					t_ast;
+
+
+typedef struct s_data
+{
+	t_env	*env;
+	int		pid;
+	int		fd_out;
+	int		fd_in;
+}			t_data;
+
+
+
+
 //-------ast.c
-// t_ast*	create_node(char *value);
+t_ast*	create_first_node(char *value, char *command);
+t_ast*	create_node(char *value);
+void	insert_left(t_ast **ast, char *value);
+void	add_value(t_ast **ast, char *value);
+void	print_tree_rec(t_ast *ast, int level);
 
 //------parsing.c------//
 
-void	*parsing(char *line, char **get_env);
-// char	*parsing(char *line, char **get_env);
-// char	*single_quote_parse(char *line, int *i);
-int		check_char(char *line, char ch, int i);
-// char	*double_quote_parse(char *line, int *i, char **get_env);
+int	check_char(char *line, char ch, int i);
 char	*slash_parse(char *line, int *i);
+char *single_quote_parse(char *line, int *i);
+char	*double_quote_parse(char *line, int *i, char **get_env);
+char *skip_space(char *line, int *i);
+char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env);
+void	parsing(char *line, char **get_env);
+
 
 //------dollar_parse.c------//
-char	*parse_dollar(char *line, int *i, char **get_env, t_ast **ast);
+char	*parse_dollar(char *line, int *i, char **get_env);
 int		if_key(char c);
-
-
-//------create_list.c------//
-t_cmd  *new_list(char *arg);
-void	add_back(t_cmd *lst, char *value);
 
 
 t_ast*	insert_val(t_ast **ast, char *value);
@@ -101,4 +102,6 @@ int	ft_strequal(const char *str1, const char *str2);
 size_t	ft_arraylen(char **str);
 void free_array(char **str);
 
+int		 rl_on_new_line(void);
+void		rl_replace_line(const char *text, int clear_undo);
 #endif

@@ -8,7 +8,7 @@ char **get_envp(char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	data = (char **)malloc(sizeof(char *) * (i + 1));
+	data = (char **)malloc(sizeof(char *) * i + 1);
 	if (!data)
 	{
 		write(1, "Error in memory allocation\n", ft_strlen("Error in memory allocation\n"));
@@ -20,66 +20,8 @@ char **get_envp(char **envp)
 		data[i] = ft_strdup(envp[i]);
 		i++;
 	}
+	// printf("%d\n", i);
 	return(data);
-}
-
-enum built_in {
-	echo,
-	cd,
-	pwd,
-	export,
-	unset,
-	env,
-	// exit,
-};
-
-
-t_cmd *get_args(char *line)
-{
-	char *tmp;
-	t_cmd *a;
-
-	int i = 0;
-	a = NULL;
-	while (line[i])
-	{
-		if (line[i] != ' ' && line[i + 1] == ' ')
-		{
-			tmp = ft_substr(line, 0, i + 1);
-			if (a == NULL)
-				a = new_list(tmp);
-			else
-				add_back(a, tmp);
-			line = ft_strdup(line + i + 2);
-			i = 0;
-		}
-		// else if (line[i] == '>' || line[i] == '<')
-		// {
-		// 	tmp = ft_substr(line, 0, i);
-		// 	if (a == NULL)
-		// 		a = new_list(tmp);
-		// 	else
-		// 		add_back(a, tmp);
-		// 	tmp = ft_substr(line, i, i);
-		// 	printf("tmp=%s\n", tmp);
-		// 	add_back(a, line[i]);
-		// 	line = ft_strdup(line + i + 1);
-		// 	i = 0;
-		// }
-		else
-			i++;
-		// printf("line = |%s|\n", line);
-	}
-	if (a == NULL)
-		a = new_list(line);
-	else
-		add_back(a, line);
-	// while (a != NULL)
-	// {
-	// 	printf("a->value = %s a->prior = %d\n", a->value, a->prior);
-	// 	a = a->next;
-	// }
-	return (a);
 }
 
 char **array_init(char *line)
@@ -119,23 +61,75 @@ char **array_init(char *line)
 	return (array);
 }
 
+// void	handlerInt(int signum)
+// {
+// 	signum = 0;
+// 	rl_on_new_line();
+// 	rl_redisplay();
+// 	write(1, "  \b\b\n", 5);
+// 	rl_on_new_line();
+// 	// rl_replace_line("", 1);
+// 	rl_redisplay();
+// 	// set_exit_status(1);
+// }
+
+// void	sigHandler(void)
+// {
+// 	signal(SIGQUIT, SIG_IGN);
+// 	signal(SIGINT, handlerInt);
+// }
+// char *start_loop(void)
+// {
+// 	// sigHandler();
+// 	return (readline("Z&D_Shell > "));
+// }
+
+t_data	*create_data(char **env, int argc, char **argv)
+{
+	t_data *data;
+
+	data = malloc(sizeof(t_data));
+	data->env = env_init(env);
+	data->fd_in = dup(STDIN_FILENO); //need to change to dup2(int, int)
+	data->fd_out = dup(STDOUT_FILENO); //same
+	data->pid = 1;
+	return (data);
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	char	**get_env;
 	char	*line;
 	char	**array;
 	t_data	*data;
+	// int i = 0;
 
-	data = create_data(env, argc, argv);
+	// data = create_data(envp, argc, argv);
 	get_env = get_envp(envp);
+	// while (get_env[i])
+	// {
+	// 	printf("%s\n", get_env[i]);
+	// 	i++;
+	// }
 	// while (1)
-	// {d
-		// line = readline("> ");
-		line = ft_strdup("echo < test > test2");
-		array = array_init(line);
+	// {
+		// line = readline("Z&D_Shell > ");
+		line = ft_strdup("echo hello > a > b > c");
+		// if (!line)
+		// {
+		// 	ft_putendl_fd("exit", STDOUT_FILENO);
+		// 	break ;
+		// }
+		// if (line[0] == '\0')
+		// {
+		// 	free(line);
+		// 	continue;
+		// }
+		// array = array_init(line);
+		// if (!array)
+		// 	continue ;
 		parsing(line, get_env);
-		printf("%s\n", line);
-		// print_tree_rec(ast, 0);
+		// printf("%s\n", line);
 	// }
 
 }

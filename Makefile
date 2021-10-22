@@ -1,6 +1,6 @@
 NAME = minishell
 
-CC = gcc -lreadline
+CC = gcc 
 FLAGS = -Wall  -Wextra 
 
 LIBFT = $(LIBFT_DIRECTORY)libft.a
@@ -14,7 +14,10 @@ SOURCES =	main_d.c\
 			parsing.c\
 			dollar_parse.c\
 			create_list.c\
-	
+			builtins.c\
+			env_functions.c\
+			zarina.c
+
 
 OBJECTS_DIRECTORY = objects/
 OBJECTS_LIST = $(patsubst %.c, %.o, $(SOURCES))
@@ -32,7 +35,7 @@ all: $(NAME)
 
 $(NAME): $(OBJECTS) $(HEADER) 
 	@make -C $(LIBFT_DIRECTORY)
-	@$(CC) $(FLAGS) $(OBJECTS) -L. libft/libft.a -o $(NAME) 
+	@$(CC) $(FLAGS) $(OBJECTS) -L. libft/libft.a -o $(NAME) -lreadline
 	@echo "\n$(NAME): $(GREEN)object files were created$(RESET)"
 	@echo "$(NAME): $(GREEN)$(NAME) was created$(RESET)"
 

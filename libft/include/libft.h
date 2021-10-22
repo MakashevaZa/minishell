@@ -31,7 +31,7 @@ void	*ft_memchr(const void *src, int c, size_t n);
 void	*ft_calloc(size_t count, size_t t);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putnbr_fd(int n, int fd);
-void	ft_putstr(char *s);
+void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_lstclear(t_list **lst, void(*del)(void*));
 void	ft_lstadd_front(t_list **lst, t_list *new);
