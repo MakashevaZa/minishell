@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
+#include <fcntl.h>
 #include <unistd.h>
 
 typedef struct s_env
@@ -102,4 +102,10 @@ void free_array(char **str);
 
 int		 rl_on_new_line(void);
 void		rl_replace_line(const char *text, int clear_undo);
+
+
+/* ---- executor ------ */
+void go_through_tree(t_ast *ast, t_data *data);
+
+
 #endif
