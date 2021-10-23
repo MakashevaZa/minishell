@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
+#include <fcntl.h>
 #include <unistd.h>
 
 typedef struct s_env
@@ -53,7 +53,7 @@ char *single_quote_parse(char *line, int *i);
 char	*double_quote_parse(char *line, int *i, char **get_env);
 char *skip_space(char *line, int *i);
 char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env);
-void	parsing(char *line, char **get_env);
+t_ast	*parsing(char *line, char **get_env);
 
 
 //------dollar_parse.c------//
@@ -104,4 +104,10 @@ void free_array(char **str);
 
 int		 rl_on_new_line(void);
 void		rl_replace_line(const char *text, int clear_undo);
+
+
+/* ---- executor ------ */
+void go_through_tree(t_ast *ast, t_data *data);
+
+
 #endif
