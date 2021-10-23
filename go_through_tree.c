@@ -7,7 +7,7 @@ static void heredoc_func(t_ast *ast)
     if (!ast)
         return ;
     if (ft_strequal(ast->value, "<<"))
-        here = open("", )
+        here = open("", );
     heredoc_func(ast->left);
     heredoc_func(ast->right);
 }

@@ -98,7 +98,7 @@ t_data	*create_data(char **env, int argc, char **argv)
 
 int main(int argc, char **argv, char **envp)
 {
-	char	**get_env;
+	// char	**get_env;
 	char	*line;
 	char	**array;
 	t_data	*data;
@@ -106,16 +106,16 @@ int main(int argc, char **argv, char **envp)
 	// int i = 0;
 
 	 data = create_data(envp, argc, argv);
-	get_env = get_envp(envp); //do we need it? why not envp
+	// get_env = get_envp(envp); //do we need it? why not envp
 	// while (get_env[i])
 	// {
 	// 	printf("%s\n", get_env[i]);
 	// 	i++;
 	// }
-	// while (1)
-	// {
-		// line = readline("Z&D_Shell > ");
-		line = ft_strdup("echo hello > a > b > c");
+	while (1)
+	{
+		line = readline("Z&D_Shell > ");
+		// line = ft_strdup("cat hello >> a >> b");
 		// if (!line)
 		// {
 		// 	ft_putendl_fd("exit", STDOUT_FILENO);
@@ -130,9 +130,10 @@ int main(int argc, char **argv, char **envp)
 		// if (!array)
 		// 	continue ;
 				
-		ast = parsing(line, get_env); //do we need get_env? why not envp
-		go_through_tree(ast, data);
+		ast = parsing(line, envp); //do we need get_env? why not envp
+		// go_through_tree(ast, data);
 		// printf("%s\n", line);
-	// }
+		print_tree_rec(ast, 0);
+	}
 
 }

@@ -21,8 +21,6 @@ typedef struct s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 	char			*value;
-	// char			*command;
-	// char			**args;
 	int				prior;
 }					t_ast;
 
@@ -53,7 +51,7 @@ char *single_quote_parse(char *line, int *i);
 char	*double_quote_parse(char *line, int *i, char **get_env);
 char *skip_space(char *line, int *i);
 char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env);
-void	parsing(char *line, char **get_env);
+t_ast	*parsing(char *line, char **get_env);
 
 
 //------dollar_parse.c------//

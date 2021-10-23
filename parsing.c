@@ -104,6 +104,8 @@ char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env)
 	tmp = ft_substr(line, 0, j);
 	if (tmp[0] == ' ')
 		tmp = ft_substr(line, 1, j - 1);
+	if (tmp[ft_strlen(tmp) - 1] == ' ')
+		tmp = ft_substr(tmp, 0, ft_strlen(tmp) - 1);
 	while(tmp[++k])
 	{
 		if (tmp[k] == '\"')
@@ -115,54 +117,38 @@ char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env)
 		if (tmp[k] == '\\')
 			tmp = slash_parse(tmp, &k);
 		if (tmp[k] == ' ')
-		{
 			tmp = skip_space(tmp, &k);
-			// break ;
-		}
 	}
-	if (tmp[ft_strlen(tmp) - 1] == ' ')
-		tmp = ft_substr(tmp, 0, ft_strlen(tmp) - 1);
-	// if (tmp[k] == '\0')
-	// 	add_value(ast, tmp);
 	line = ft_strdup(line + j);
 	j = 0;
-	// if (*ast == NULL)
-	// 	*ast = create_node(tmp);
-	
-		if (line[j + 1] == '>' || line[j + 1] == '<')
-			{
-				if (*ast == NULL){
-					*ast = create_node(tmp);
-					add_value(ast, ft_substr(line, 0, j + 2));
-				}
-				else
-				{
-					add_value(ast, tmp);
-					add_value(ast, ft_strdup(line + j + 2));
-				}
-				line = ft_strdup(line + j + 2);
-			}
-			else
-			{
-				printf("substr = %s\n", ft_substr(line, 0, j + 1));
-				if (*ast == NULL){
-					*ast = create_node(tmp);
-					add_value(ast, ft_substr(line, 0, j + 1));
-				}
-				else
-				{
-					add_value(ast, tmp);
-					add_value(ast, ft_substr(line, 0, j + 1));
-				}
-				// line = ft_strdup(line + j + 2);
-				// add_value(ast, tmp);
-				// add_value(ast, ft_substr(line, 0, j + 1));
-				line = ft_strdup(line + j + 1);
-			}
-			printf("%s\n", line);
-
+	if (line[j + 1] == '>' || line[j + 1] == '<')
+	{
+		if (*ast == NULL){
+			*ast = create_node(tmp);
+			add_value(ast, ft_substr(line, 0, j + 2));
+		}
+		else
+		{
+			add_value(ast, tmp);
+			add_value(ast, ft_substr(line, 0, j + 2));
+		}
+		line = ft_strdup(line + j + 2);
+	}
+	else
+	{
+		if (*ast == NULL)
+		{
+			*ast = create_node(tmp);
+			add_value(ast, ft_substr(line, 0, j + 1));
+		}
+		else
+		{
+			add_value(ast, tmp);
+			add_value(ast, ft_substr(line, 0, j + 1));
+		}
+		line = ft_strdup(line + j + 1);
+	}
 	return (line);
-
 }
 
 
@@ -204,11 +190,10 @@ t_ast	*parsing(char *line, char **get_env)
 			if (line[i] == ' ')
 				line = skip_space(line, &i);
 		}
-		// if (ast == NULL)
-		// 	ast = create_node(line);
+		if (ast == NULL)
+			ast = create_node(line);
 	}
 	else
 		add_value(&ast, line);
-	print_tree_rec(ast, 0);
 	return (ast);
 }
