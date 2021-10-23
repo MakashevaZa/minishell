@@ -102,10 +102,11 @@ int main(int argc, char **argv, char **envp)
 	char	*line;
 	char	**array;
 	t_data	*data;
+	t_ast *ast;
 	// int i = 0;
 
-	// data = create_data(envp, argc, argv);
-	get_env = get_envp(envp);
+	 data = create_data(envp, argc, argv);
+	get_env = get_envp(envp); //do we need it? why not envp
 	// while (get_env[i])
 	// {
 	// 	printf("%s\n", get_env[i]);
@@ -128,7 +129,9 @@ int main(int argc, char **argv, char **envp)
 		// array = array_init(line);
 		// if (!array)
 		// 	continue ;
-		parsing(line, get_env);
+				
+		ast = parsing(line, get_env); //do we need get_env? why not envp
+		go_through_tree(ast, data);
 		// printf("%s\n", line);
 	// }
 

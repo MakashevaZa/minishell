@@ -167,7 +167,7 @@ char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env)
 
 
 
-void	parsing(char *line, char **get_env)
+t_ast	*parsing(char *line, char **get_env)
 {
 	int i;
 	int j = -1;
@@ -210,4 +210,5 @@ void	parsing(char *line, char **get_env)
 	else
 		add_value(&ast, line);
 	print_tree_rec(ast, 0);
+	return (ast);
 }
