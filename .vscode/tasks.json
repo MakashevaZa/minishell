@@ -15,7 +15,9 @@
                 "env_functions.c",
                 "parsing.c",
                 "zarina.c",
+                // "main_z.c",
                 "libft.a",
+                // "go_through_tree.c",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],

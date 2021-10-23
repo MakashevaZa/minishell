@@ -45,17 +45,17 @@ void	print_tree_rec(t_ast *ast, int level);
 
 //------parsing.c------//
 
-int	check_char(char *line, char ch, int i);
+int		check_char(char *line, char ch, int i);
 char	*slash_parse(char *line, int *i);
-char *single_quote_parse(char *line, int *i);
-char	*double_quote_parse(char *line, int *i, char **get_env);
-char *skip_space(char *line, int *i);
-char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env);
-t_ast	*parsing(char *line, char **get_env);
+char	*single_quote_parse(char *line, int *i);
+char	*double_quote_parse(char *line, int *i, char **envp);
+char	*skip_space(char *line, int *i);
+char	*redirect_parse(char *line, t_ast **ast, int *i, char **envp);
+t_ast	*parsing(char *line, char **envp);
 
 
 //------dollar_parse.c------//
-char	*parse_dollar(char *line, int *i, char **get_env);
+char	*parse_dollar(char *line, int *i, char **envp);
 int		if_key(char c);
 
 
@@ -65,7 +65,7 @@ t_ast*	insert_val(t_ast **ast, char *value);
  t_ast*	create_node(char *value);
  t_ast*	create_first_node(char *value, char *command);
 void	add_value(t_ast **ast, char *value); 
-t_ast search(t_ast *ast);
+int check_redir(t_ast *ast);
 
 /* -- builtins -- */
 

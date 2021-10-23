@@ -37,7 +37,39 @@ static void heredoc_func(t_ast *ast)
     heredoc_func(ast->right);
 }
 
+// void	handlerIntHD(int signum)
+// {
+// 	signum = 0;
+// 	rl_on_new_line();
+// 	rl_redisplay();
+// 	write(1, "  \b\b\n", 5);
+// 	exit(1);
+// }
+
+// void	sigHDHandle(void)
+// {
+// 	signal(SIGQUIT, SIG_IGN);
+// 	signal(SIGINT, handlerIntHD);
+// }
+
 void go_through_tree(t_ast *ast, t_data *data)
 {
-    heredoc_func(ast);
+    int pid;
+    int i;
+
+    if (check_redir(ast))
+    {
+        pid = fork();
+        signal(SIGINT, SIG_IGN);
+        if (pid == 0)
+        {
+            // sigHDHandler();
+            heredoc_func(ast);
+        }
+        waitpid(pid, &i, 0);
+        if (WTERMSIG(i) == SIGINT)
+            exit(1);
+        else
+            exit(i / 256);
+    }
 }

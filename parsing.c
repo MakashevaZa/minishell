@@ -46,10 +46,14 @@ char *single_quote_parse(char *line, int *i)
 		tmp3 = ft_strjoin(tmp, tmp3);
 		return (tmp3);
 	}
+	else{
+		write(1, "Syntax error!\n", ft_strlen("Syntax error!\n"));
+		exit(1);
+	}
 	return (line);
 }
 
-char	*double_quote_parse(char *line, int *i, char **get_env)
+char	*double_quote_parse(char *line, int *i, char **envp)
 {
 	int j = *i;
 	char *tmp;
@@ -63,7 +67,7 @@ char	*double_quote_parse(char *line, int *i, char **get_env)
 			if (line[*i] == '\\' && (line[*i + 1] == '\"' || line[*i + 1] == '$' || line[*i + 1] == '\\'))
 				line = slash_parse(line, i);
 			if (line[*i] == '$')
-				line = parse_dollar(line, i, get_env);
+				line = parse_dollar(line, i, envp);
 			if (line[*i] == '\"')
 				break ;
 		}
@@ -74,6 +78,10 @@ char	*double_quote_parse(char *line, int *i, char **get_env)
 		tmp = ft_strjoin(tmp, tmp3);
 		(*i)--;
 		return (tmp);
+	}
+	else{
+		write(1, "Syntax error!\n", ft_strlen("Syntax error!\n"));
+		exit(1);
 	}
 	return (line);
 }
@@ -94,26 +102,31 @@ char *skip_space(char *line, int *i)
 	return (tmp1);
 }
 
-char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env)
+char *redirect_parse(char *line, t_ast **ast, int *i, char **envp)
 {
 	int j = *i;
 	int k = -1;
 	char *tmp;
 	char *tmp1;
+	int l = 0;
 
 	tmp = ft_substr(line, 0, j);
-	if (tmp[0] == ' ')
-		tmp = ft_substr(line, 1, j - 1);
+	if (tmp[l] == ' ')
+	{
+		while (tmp[l] == ' ')
+			l++;
+		tmp = ft_substr(line, l, j - l);
+	}
 	if (tmp[ft_strlen(tmp) - 1] == ' ')
 		tmp = ft_substr(tmp, 0, ft_strlen(tmp) - 1);
 	while(tmp[++k])
 	{
 		if (tmp[k] == '\"')
-			tmp = double_quote_parse(tmp, &k, get_env);
+			tmp = double_quote_parse(tmp, &k, envp);
 		if (tmp[k] == '\'')
 			tmp = single_quote_parse(tmp, &k);
 		if (tmp[k] == '$')
-			tmp = parse_dollar(tmp, &k, get_env);
+			tmp = parse_dollar(tmp, &k, envp);
 		if (tmp[k] == '\\')
 			tmp = slash_parse(tmp, &k);
 		if (tmp[k] == ' ')
@@ -153,7 +166,7 @@ char *redirect_parse(char *line, t_ast **ast, int *i, char **get_env)
 
 
 
-t_ast	*parsing(char *line, char **get_env)
+t_ast	*parsing(char *line, char **envp)
 {
 	int i;
 	int j = -1;
@@ -167,7 +180,7 @@ t_ast	*parsing(char *line, char **get_env)
 	while (line[++i])
 	{
 		if (line[i] == '>' || line[i] == '<' || line[i] == '|'){
-			line = redirect_parse(line, &ast, &i, get_env);
+			line = redirect_parse(line, &ast, &i, envp);
 			i = -1;
 		}
 	}
@@ -180,11 +193,11 @@ t_ast	*parsing(char *line, char **get_env)
 		while (line[++i])
 		{
 			if (line[i] == '\"')
-				line = double_quote_parse(line, &i, get_env);
+				line = double_quote_parse(line, &i, envp);
 			if (line[i] == '\'')
 				line = single_quote_parse(line, &i);
 			if (line[i] == '$')
-				line = parse_dollar(line, &i, get_env);
+				line = parse_dollar(line, &i, envp);
 			if (line[i] == '\\')
 				line = slash_parse(line, &i);
 			if (line[i] == ' ')

@@ -17,7 +17,7 @@ SOURCES =	main_d.c\
 			builtins.c\
 			env_functions.c\
 			zarina.c \
-			# go_through_tree.c\
+			go_through_tree.c\
 
 
 OBJECTS_DIRECTORY = objects/

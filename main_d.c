@@ -1,28 +1,28 @@
 #include "minishell.h"
 
-char **get_envp(char **envp)
-{
-	char **data;
-	int i;
+// char **get_envp(char **envp)
+// {
+// 	char **data;
+// 	int i;
 
-	i = 0;
-	while (envp[i])
-		i++;
-	data = (char **)malloc(sizeof(char *) * i + 1);
-	if (!data)
-	{
-		write(1, "Error in memory allocation\n", ft_strlen("Error in memory allocation\n"));
-		exit (1);
-	}
-	i = 0;
-	while (envp[i])
-	{
-		data[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	// printf("%d\n", i);
-	return(data);
-}
+// 	i = 0;
+// 	while (envp[i])
+// 		i++;
+// 	data = (char **)malloc(sizeof(char *) * i + 1);
+// 	if (!data)
+// 	{
+// 		write(1, "Error in memory allocation\n", ft_strlen("Error in memory allocation\n"));
+// 		exit (1);
+// 	}
+// 	i = 0;
+// 	while (envp[i])
+// 	{
+// 		data[i] = ft_strdup(envp[i]);
+// 		i++;
+// 	}
+// 	// printf("%d\n", i);
+// 	return(data);
+// }
 
 char **array_init(char *line)
 {
@@ -40,9 +40,9 @@ char **array_init(char *line)
 		{
 			tmp = ft_substr(line, 0, i);
 			break ;
-			printf("tmp = %s\n", tmp);
 		}
 	}
+	tmp = ft_substr(line, 0, i);
 	array = (char **)malloc(sizeof(char *) * ft_strlen(tmp));
 	if (!array)
 		return (NULL);
@@ -52,12 +52,12 @@ char **array_init(char *line)
 		{
 			array[ind] = ft_substr(tmp, 0, j);
 			tmp = ft_substr(tmp, j + 1, ft_strlen(tmp) - j);
-			printf("array[i] = %s\n", array[ind]);
 			ind++;
 			j = -1;
 		}
 		j++;
 	}
+	array[ind] = tmp;
 	return (array);
 }
 
@@ -80,7 +80,7 @@ char **array_init(char *line)
 // }
 // char *start_loop(void)
 // {
-// 	// sigHandler();
+// 	sigHandler();
 // 	return (readline("Z&D_Shell > "));
 // }
 
@@ -107,15 +107,10 @@ int main(int argc, char **argv, char **envp)
 
 	 data = create_data(envp, argc, argv);
 	// get_env = get_envp(envp); //do we need it? why not envp
-	// while (get_env[i])
+	// while (1)
 	// {
-	// 	printf("%s\n", get_env[i]);
-	// 	i++;
-	// }
-	while (1)
-	{
-		line = readline("Z&D_Shell > ");
-		// line = ft_strdup("cat hello >> a >> b");
+	// 	line = readline("Z&D_Shell > ");
+		line = ft_strdup("echo hello world     >     a");
 		// if (!line)
 		// {
 		// 	ft_putendl_fd("exit", STDOUT_FILENO);
@@ -126,14 +121,17 @@ int main(int argc, char **argv, char **envp)
 		// 	free(line);
 		// 	continue;
 		// }
-		// array = array_init(line);
+		array = array_init(line);
+		// int i = 0;
+		// while (array[i]){
+		// 	printf("%s\n", array[i]);
+		// 	i++;
+		// }
 		// if (!array)
 		// 	continue ;
-				
 		ast = parsing(line, envp); //do we need get_env? why not envp
 		// go_through_tree(ast, data);
 		// printf("%s\n", line);
-		print_tree_rec(ast, 0);
-	}
-
+		// print_tree_rec(ast, 0);
+	// }
 }

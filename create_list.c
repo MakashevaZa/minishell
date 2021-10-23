@@ -11,3 +11,10 @@
 		}
 	return (0);
 }
+
+int check_redir(t_ast *ast)
+{
+	if (ft_strcmp(ast->value, ">") == 0 || ft_strcmp(ast->value, ">>") == 0 || ft_strcmp(ast->value, "<") == 0 || ft_strcmp(ast->value, "<<") == 0)
+		return (1);
+	return (0);
+}
