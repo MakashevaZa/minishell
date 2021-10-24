@@ -45,20 +45,28 @@ void go_through_tree(t_ast *ast, t_data *data)
 {
     int pid;
     int i;
+    char **cmd_array;
 
     if (check_redir(ast))
     {
-        // pid = fork();
-        // signal(SIGINT, SIG_IGN);
-    //     if (pid == 0)
-    //     {
-    //         // sigHDHandler();
-            heredoc_func(ast);
-    //     }
-    //     waitpid(pid, &i, 0);
-    //     if (WTERMSIG(i) == SIGINT)
-    //         exit(1);
-    //     else
-    //         exit(i / 256);
+        heredoc_func(ast);
     }
+    cmd_array = ft_split(ast->value, ' ');
+    if (ft_strequal(cmd_array[0], "env"))
+        env_builtin(data->env);
+      else if (ft_strequal(cmd_array[0], "export"))
+        export_builtin(cmd_array, &(data->env));
+      else if (ft_strequal(cmd_array[0], "unset"))
+        unset_builtin(cmd_array, &(data->env));
+      else if (ft_strequal(cmd_array[0], "echo"))
+        echo_builtin(cmd_array);
+      else if (ft_strequal(cmd_array[0], "cd"))
+        cd_builtin(cmd_array, &(data->env));
+      else if (ft_strequal(cmd_array[0], "exit"))
+        exit_builtin();
+      else if (ft_strequal(cmd_array[0], "pwd"))
+        pwd_builtin();
+      else
+        binary_command(cmd_array, &(data->env));
+    free_array(cmd_array);
 }
