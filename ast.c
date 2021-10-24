@@ -9,7 +9,7 @@ t_ast*	create_first_node(char *value, char *command)
 	{
 		node->left = NULL;
 		node->right = NULL;
-		node->value = value;
+		// node->value[0] = value;
 		// node->command = command;
 		node->prior = 1;
 	}
@@ -25,7 +25,7 @@ t_ast*	create_node(char *value)
 	{
 		node->left = NULL;
 		node->right = NULL;
-		node->value = value;
+		node->value[0] = value;
 		if (ft_strcmp(value, ">") == 0 || ft_strcmp(value, "<") == 0)
         	node->prior = 3;
 		else if (ft_strcmp(value, ">>") == 0 || ft_strcmp(value, "<<") == 0)

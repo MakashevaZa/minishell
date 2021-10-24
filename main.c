@@ -166,23 +166,23 @@ char **array_init(char *line)
 	return (array);
 }
 */
-void	handlerInt(int signum)
-{
-	signum = 0;
-	rl_on_new_line();
-	rl_redisplay();
-	write(1, "  \b\b\n", 5);
-	rl_on_new_line();
-	rl_replace_line("", 1);
-	rl_redisplay();
-	exit(1);
-}
+// void	handlerInt(int signum)
+// {
+// 	signum = 0;
+// 	rl_on_new_line();
+// 	rl_redisplay();
+// 	write(1, "  \b\b\n", 5);
+// 	rl_on_new_line();
+// 	rl_replace_line("", 1);
+// 	rl_redisplay();
+// 	exit(1);
+// }
 
-void	sigHandler(void)
-{
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handlerInt);
-}
+// void	sigHandler(void)
+// {
+// 	signal(SIGQUIT, SIG_IGN);
+// 	signal(SIGINT, handlerInt);
+// }
 /*
 char *start_loop(void)
 {
@@ -190,20 +190,20 @@ char *start_loop(void)
 	return (readline("Z&D_Shell > "));
 }
 */
-void	handlerIntHD(int signum)
-{
-	signum = 0;
-	rl_on_new_line();
-	rl_redisplay();
-	write(1, "  \b\b\n", 5);
-	exit(1);
-}
+// void	handlerIntHD(int signum)
+// {
+// 	signum = 0;
+// 	rl_on_new_line();
+// 	rl_redisplay();
+// 	write(1, "  \b\b\n", 5);
+// 	exit(1);
+// }
 
-void	sigHDHandle(void)
-{
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handlerIntHD);
-}
+// void	sigHDHandle(void)
+// {
+// 	signal(SIGQUIT, SIG_IGN);
+// 	signal(SIGINT, handlerIntHD);
+// }
 
 t_data	*create_data(char **envp)
 {
@@ -228,40 +228,40 @@ int main(int argc, char **argv, char **envp)
     (void)argc;
     (void)argv;
 	data = create_data(envp);
-	while (1)
-	{
-		line = readline("Z&D_Shell > ");
-		sigHandler();
-		// line = ft_strdup("cat main | wc > a");
-		if (!line)
-		{
-			ft_putendl_fd("exit", STDOUT_FILENO);
-			break ;
-		}
-		if (line[0] == '\0')
-		{
-			free(line);
-			continue;
-		}
-        add_history(line);
+	// while (1)
+	// {
+		// line = readline("Z&D_Shell > ");
+		// sigHandler();
+		line = ft_strdup("echo hello world > a");
+		// if (!line)
+		// {
+		// 	ft_putendl_fd("exit", STDOUT_FILENO);
+		// 	break ;
+		// }
+		// if (line[0] == '\0')
+		// {
+		// 	free(line);
+		// 	continue;
+		// }
+        // add_history(line);
 		/*array = array_init(line); //?
 		if (!array)
 			continue ;*/
-		pid = fork();
-		signal(SIGINT, SIG_IGN);
-		if (pid == 0)
-		{
-			sigHDHandle();
+		// pid = fork();
+		// signal(SIGINT, SIG_IGN);
+		// if (pid == 0)
+		// {
+			// sigHDHandle();
 			ast = parsing(line, envp); 
-	        go_through_tree(ast, data);
-            //print_tree_rec(ast, 0);
-			exit (0);
-		}
-		waitpid(pid, NULL, 0);
+	        // go_through_tree(ast, data);
+
+			// exit (0);
+		// }
+		// waitpid(pid, NULL, 0);
         // 
 		// printf("%s\n", line);
-	}
-    clear_history();
+	// }
+    // clear_history();
     return EXIT_SUCCESS;
 		
 }

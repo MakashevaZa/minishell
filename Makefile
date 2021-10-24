@@ -15,7 +15,7 @@ SOURCES =	main.c\
 			dollar_parse.c\
 			env_functions.c\
 			go_through_tree.c\
-			parsing.c\
+			parsingAstArray.c\
 			utils.c
 
 
