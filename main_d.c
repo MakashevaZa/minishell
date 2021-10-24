@@ -61,35 +61,50 @@ char **array_init(char *line)
 	return (array);
 }
 
-// void	handlerInt(int signum)
-// {
-// 	signum = 0;
-// 	rl_on_new_line();
-// 	rl_redisplay();
-// 	write(1, "  \b\b\n", 5);
-// 	rl_on_new_line();
-// 	// rl_replace_line("", 1);
-// 	rl_redisplay();
-// 	// set_exit_status(1);
-// }
+void	handlerInt(int signum)
+{
+	signum = 0;
+	rl_on_new_line();
+	rl_redisplay();
+	write(1, "  \b\b\n", 5);
+	rl_on_new_line();
+	rl_replace_line("", 1);
+	rl_redisplay();
+	exit(1);
+}
 
-// void	sigHandler(void)
-// {
-// 	signal(SIGQUIT, SIG_IGN);
-// 	signal(SIGINT, handlerInt);
-// }
-// char *start_loop(void)
-// {
-// 	sigHandler();
-// 	return (readline("Z&D_Shell > "));
-// }
+void	sigHandler(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, handlerInt);
+}
+char *start_loop(void)
+{
+	sigHandler();
+	return (readline("Z&D_Shell > "));
+}
 
-t_data	*create_data(char **env, int argc, char **argv)
+void	handlerIntHD(int signum)
+{
+	signum = 0;
+	rl_on_new_line();
+	rl_redisplay();
+	write(1, "  \b\b\n", 5);
+	exit(1);
+}
+
+void	sigHDHandle(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, handlerIntHD);
+}
+
+t_data	*create_data(char **envp, int argc, char **argv)
 {
 	t_data *data;
 
 	data = malloc(sizeof(t_data));
-	data->env = env_init(env);
+	data->env = env_init(envp);
 	data->fd_in = dup(STDIN_FILENO); //need to change to dup2(int, int)
 	data->fd_out = dup(STDOUT_FILENO); //same
 	data->pid = 1;
@@ -98,40 +113,41 @@ t_data	*create_data(char **env, int argc, char **argv)
 
 int main(int argc, char **argv, char **envp)
 {
-	// char	**get_env;
 	char	*line;
 	char	**array;
 	t_data	*data;
-	t_ast *ast;
-	// int i = 0;
+	t_ast	*ast;
+	int		pid;
 
-	 data = create_data(envp, argc, argv);
-	// get_env = get_envp(envp); //do we need it? why not envp
-	// while (1)
-	// {
-	// 	line = readline("Z&D_Shell > ");
-		line = ft_strdup("echo << a");
-		// if (!line)
-		// {
-		// 	ft_putendl_fd("exit", STDOUT_FILENO);
-		// 	break ;
-		// }
-		// if (line[0] == '\0')
-		// {
-		// 	free(line);
-		// 	continue;
-		// }
+	data = create_data(envp, argc, argv);
+	while (1)
+	{
+		line = start_loop();
+		// line = ft_strdup("cat main | wc > a");
+		if (!line)
+		{
+			ft_putendl_fd("exit", STDOUT_FILENO);
+			break ;
+		}
+		if (line[0] == '\0')
+		{
+			free(line);
+			continue;
+		}
 		array = array_init(line);
-		// int i = 0;
-		// while (array[i]){
-		// 	printf("%s\n", array[i]);
-		// 	i++;
-		// }
-		// if (!array)
-		// 	continue ;
-		ast = parsing(line, envp); //do we need get_env? why not envp
-		go_through_tree(ast, data);
+		if (!array)
+			continue ;
+		pid = fork();
+		signal(SIGINT, SIG_IGN);
+		if (pid == 0)
+		{
+			sigHDHandle();
+			ast = parsing(line, envp); //do we need get_env? why not envp
+		print_tree_rec(ast, 0);
+			exit (0);
+		}
+		waitpid(pid, NULL, 0);
+		// go_through_tree(ast, data);
 		// printf("%s\n", line);
-		// print_tree_rec(ast, 0);
-	// }
+	}
 }

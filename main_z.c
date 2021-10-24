@@ -1,5 +1,9 @@
 #include "minishell.h"
-
+void ft_err(char *str)
+{
+  ft_putendl_fd(str, 2);
+  exit(1);
+}
 
 void free_array(char **str)
 {

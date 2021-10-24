@@ -13,7 +13,7 @@ int	check_char(char *line, char ch, int i)
 
 char	*slash_parse(char *line, int *i)
 {
-	int j = *i;
+	// int j = *i;
 	char *tmp;
 	char *tmp2;
 
@@ -47,7 +47,7 @@ char *single_quote_parse(char *line, int *i)
 		return (tmp3);
 	}
 	else{
-		write(1, "Syntax error!\n", ft_strlen("Syntax error!\n"));
+		write(2, "Syntax error!\n", ft_strlen("Syntax error!\n"));
 		exit(1);
 	}
 	return (line);
@@ -80,7 +80,7 @@ char	*double_quote_parse(char *line, int *i, char **envp)
 		return (tmp);
 	}
 	else{
-		write(1, "Syntax error!\n", ft_strlen("Syntax error!\n"));
+		write(2,"Syntax error!\n", ft_strlen("Syntax error!\n"));
 		exit(1);
 	}
 	return (line);
@@ -91,8 +91,8 @@ char *skip_space(char *line, int *i)
 	int j = *i;
 	char *tmp;
 	char *tmp1;
-	char *res;
-	int k = -1;
+	// char *res;
+	// int k = -1;
 
 	while (line[j] == ' ')
 		j++;
@@ -107,7 +107,7 @@ char *redirect_parse(char *line, t_ast **ast, int *i, char **envp)
 	int j = *i;
 	int k = -1;
 	char *tmp;
-	char *tmp1;
+	// char *tmp1;
 	int l = 0;
 
 	tmp = ft_substr(line, 0, j);
@@ -169,10 +169,10 @@ char *redirect_parse(char *line, t_ast **ast, int *i, char **envp)
 t_ast	*parsing(char *line, char **envp)
 {
 	int i;
-	int j = -1;
+	// int j = -1;
 	t_ast *ast;
-	char *tmp;
-	char **array;
+	// char *tmp;
+	// char **array;
 	
 	i = -1;
 	ast = NULL;
