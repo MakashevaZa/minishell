@@ -3,13 +3,16 @@
 static void write_to_tmp(t_ast *ast, int fd)
 {
     char *buf;
-
-    while ((buf = readline("> ")) != NULL && !ft_strequal(buf, ast->right)) 
+    while (1)
     {
-        if (ft_strlen(buf) > 0) 
-            ft_putendl_fd(buf, fd);
+        buf = readline("> ");
+        if (!buf)
+            
+        ft_strequal(buf, ast->right)
+        ft_putendl_fd(buf, fd);
         free(buf);
     }
+    
 }
 
 static void heredoc_func(t_ast *ast)
