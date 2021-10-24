@@ -9,7 +9,7 @@ LIBFT_HEADERS = $(LIBFT_DIRECTORY)include/
 
 HEADER =	minishell.h
 
-SOURCES =	main_z.c\
+SOURCES =	main_d.c\
 			ast.c\
 			parsing.c\
 			dollar_parse.c\
@@ -17,7 +17,7 @@ SOURCES =	main_z.c\
 			builtins.c\
 			env_functions.c\
 			go_through_tree.c\
-			# zarina.c \
+			zarina.c \
 
 
 OBJECTS_DIRECTORY = objects/

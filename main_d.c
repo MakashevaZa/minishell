@@ -68,7 +68,7 @@ void	handlerInt(int signum)
 	rl_redisplay();
 	write(1, "  \b\b\n", 5);
 	rl_on_new_line();
-	rl_replace_line("", 1);
+	// rl_replace_line("", 1);
 	rl_redisplay();
 	exit(1);
 }
@@ -143,7 +143,7 @@ int main(int argc, char **argv, char **envp)
 		{
 			sigHDHandle();
 			ast = parsing(line, envp); //do we need get_env? why not envp
-		print_tree_rec(ast, 0);
+			print_tree_rec(ast, 0);
 			exit (0);
 		}
 		waitpid(pid, NULL, 0);
