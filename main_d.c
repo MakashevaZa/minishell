@@ -110,7 +110,7 @@ int main(int argc, char **argv, char **envp)
 	// while (1)
 	// {
 	// 	line = readline("Z&D_Shell > ");
-		line = ft_strdup("echo hello world     >     a");
+		line = ft_strdup("echo << a");
 		// if (!line)
 		// {
 		// 	ft_putendl_fd("exit", STDOUT_FILENO);
@@ -130,7 +130,7 @@ int main(int argc, char **argv, char **envp)
 		// if (!array)
 		// 	continue ;
 		ast = parsing(line, envp); //do we need get_env? why not envp
-		// go_through_tree(ast, data);
+		go_through_tree(ast, data);
 		// printf("%s\n", line);
 		// print_tree_rec(ast, 0);
 	// }

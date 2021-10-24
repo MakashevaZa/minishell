@@ -114,7 +114,7 @@ void cd_builtin(char **cmd, t_env **env_list)
     home = env_exists(env_list, "HOME");
     if (home)
     {
-      if (chdir(home->value) == -1)
+      if (chdir(home->value) != 0)
         printf("Error while going to Home, cd with no args");
       else
       {
@@ -154,7 +154,7 @@ void cd_builtin(char **cmd, t_env **env_list)
   }
   else
   {
-    if (chdir(cmd[1]) == -1)
+    if (chdir(cmd[1]) != 0)
       printf("the path is incorrect");
     else
       {
