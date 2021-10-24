@@ -1,5 +1,110 @@
 #include "minishell.h"
 
+void ft_err(char *str)
+{
+  ft_putendl_fd(str, 2);
+  exit(1);
+}
+
+void free_array(char **str)
+{
+  int i;
+
+  i = 0; 
+	while (str[i])
+		free(str[i++]);
+	free(str[i]);
+	free(str);
+}
+
+int	ft_strequal(const char *str1, const char *str2)
+{
+	while ((*str1 == *str2) && *str1 && *str2)
+	{	
+		str1++;
+		str2++;
+	}
+  return (!((unsigned char)*str1 - (unsigned char)*str2));
+}
+
+size_t	ft_arraylen(char **str)
+{
+	size_t	n;
+
+	n = 0;
+	while (*str++)
+		n++;
+	return (n);
+}
+
+char	*path_handler(char *cmd, char **env)
+{
+	int		i;
+	char	**path_list;
+	char	*temp;
+
+	if (access(cmd, F_OK) == 0)
+		return (cmd);
+	i = 0;
+	while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0)
+		i++;
+	if (!env[i])
+		ft_err("Error: problem with ENV, no PATHs found");
+	path_list = ft_split(env[i] + 5, ':');
+	i = 0;
+	while (path_list[i])
+	{
+		path_list[i] = ft_strjoin(path_list[i], "/");
+		temp = ft_strjoin(path_list[i], cmd);
+		if (access(temp, F_OK) == 0)
+			return (temp);
+		i++;
+	}
+	ft_err("Error: no binary found for the command");
+	return (NULL);
+}
+
+char **env_array(t_env **env_list)
+{
+  int i;
+  t_env *tmp;
+  char **array;
+  char *equal;
+
+  i = 0; 
+  tmp = *env_list; 
+  while (tmp)
+  {
+    i++;
+    tmp = tmp->next;
+  }
+  array = (char **)malloc(sizeof(char *) * i);
+  if (!array)
+    return (NULL);
+  tmp = *env_list;
+  while (tmp)
+  {
+    equal = ft_strjoin(tmp->key, "="); //protect
+    *array = ft_strjoin(equal, tmp->value); //protect and clean what was created
+    array++;
+    tmp = tmp->next;
+    free(equal);
+  }
+  *array = NULL;
+  return array;
+}
+
+void  binary_command(char **cmd_array, t_env **env_list)
+{
+  char **env;
+  char *path;
+
+  env = env_array(env_list);
+  path = path_handler(cmd_array[0], env);
+  execve(path, cmd_array, env);
+  
+}
+
 // char **get_envp(char **envp)
 // {
 // 	char **data;
@@ -23,7 +128,7 @@
 // 	// printf("%d\n", i);
 // 	return(data);
 // }
-
+/*
 char **array_init(char *line)
 {
 	char **array;
@@ -60,7 +165,7 @@ char **array_init(char *line)
 	array[ind] = tmp;
 	return (array);
 }
-
+*/
 void	handlerInt(int signum)
 {
 	signum = 0;
@@ -68,7 +173,7 @@ void	handlerInt(int signum)
 	rl_redisplay();
 	write(1, "  \b\b\n", 5);
 	rl_on_new_line();
-	// rl_replace_line("", 1);
+	rl_replace_line("", 1);
 	rl_redisplay();
 	exit(1);
 }
@@ -78,12 +183,13 @@ void	sigHandler(void)
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handlerInt);
 }
+/*
 char *start_loop(void)
 {
 	sigHandler();
 	return (readline("Z&D_Shell > "));
 }
-
+*/
 void	handlerIntHD(int signum)
 {
 	signum = 0;
@@ -99,7 +205,7 @@ void	sigHDHandle(void)
 	signal(SIGINT, handlerIntHD);
 }
 
-t_data	*create_data(char **envp, int argc, char **argv)
+t_data	*create_data(char **envp)
 {
 	t_data *data;
 
@@ -119,10 +225,13 @@ int main(int argc, char **argv, char **envp)
 	t_ast	*ast;
 	int		pid;
 
-	data = create_data(envp, argc, argv);
+    (void)argc;
+    (void)argv;
+	data = create_data(envp);
 	while (1)
 	{
-		line = start_loop();
+		line = readline("Z&D_Shell > ");
+		sigHandler();
 		// line = ft_strdup("cat main | wc > a");
 		if (!line)
 		{
@@ -134,20 +243,25 @@ int main(int argc, char **argv, char **envp)
 			free(line);
 			continue;
 		}
-		array = array_init(line);
+        add_history(line);
+		/*array = array_init(line); //?
 		if (!array)
-			continue ;
+			continue ;*/
 		pid = fork();
 		signal(SIGINT, SIG_IGN);
 		if (pid == 0)
 		{
 			sigHDHandle();
-			ast = parsing(line, envp); //do we need get_env? why not envp
-			print_tree_rec(ast, 0);
+			ast = parsing(line, envp); 
+	        go_through_tree(ast, data);
+            //print_tree_rec(ast, 0);
 			exit (0);
 		}
 		waitpid(pid, NULL, 0);
-		// go_through_tree(ast, data);
+        // 
 		// printf("%s\n", line);
 	}
+    clear_history();
+    return EXIT_SUCCESS;
+		
 }
