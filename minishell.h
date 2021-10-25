@@ -21,7 +21,7 @@ typedef struct s_ast
 {
 	struct s_ast	*left;
 	struct s_ast	*right;
-	char			**value;
+	char			*value;
 	int				prior;
 }					t_ast;
 
@@ -50,10 +50,9 @@ int		check_char(char *line, char ch, int i);
 char	*slash_parse(char *line, int *i);
 char	*single_quote_parse(char *line, int *i);
 char	*double_quote_parse(char *line, int *i, char **envp);
-char	*skip_space(char *line, int *i);
-char	*redirect_parse(char *line, t_ast **ast, int *i, char **envp);
-t_ast	*parsing(char *line, char **envp);
-
+char *skip_space(char *line, int *i);
+char *redirect_parse(char *line, int *i, char **envp);
+char **parsing(char *line, char **envp);
 
 //------dollar_parse.c------//
 char	*parse_dollar(char *line, int *i, char **envp);

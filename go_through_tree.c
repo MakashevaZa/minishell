@@ -26,7 +26,7 @@ static void heredoc_func(t_ast *ast)
     
     if (!ast)
         return ;
-    if (ft_strequal(ast->value, "<<"))
+    if (ft_strequal(ast->value[0], "<<"))
     {
         name = ft_strjoin("/tmp/.tmp_heredoc", ft_itoa(i));
         here = open(name, O_CREAT | O_TRUNC | O_WRONLY,
