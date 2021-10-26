@@ -166,23 +166,23 @@ char **array_init(char *line)
 	return (array);
 }
 */
-void	handlerInt(int signum)
-{
-	signum = 0;
-	rl_on_new_line();
-	rl_redisplay();
-	write(1, "  \b\b\n", 5);
-	rl_on_new_line();
-	rl_replace_line("", 1);
-	rl_redisplay();
-	exit(1);
-}
+// void	handlerInt(int signum)
+// {
+// 	signum = 0;
+// 	rl_on_new_line();
+// 	rl_redisplay();
+// 	write(1, "  \b\b\n", 5);
+// 	rl_on_new_line();
+// 	rl_replace_line("", 1);
+// 	rl_redisplay();
+// 	exit(1);
+// }
 
-void	sigHandler(void)
-{
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handlerInt);
-}
+// void	sigHandler(void)
+// {
+// 	signal(SIGQUIT, SIG_IGN);
+// 	signal(SIGINT, handlerInt);
+// }
 /*
 char *start_loop(void)
 {
@@ -190,20 +190,20 @@ char *start_loop(void)
 	return (readline("Z&D_Shell > "));
 }
 */
-void	handlerIntHD(int signum)
-{
-	signum = 0;
-	rl_on_new_line();
-	rl_redisplay();
-	write(1, "  \b\b\n", 5);
-	exit(1);
-}
+// void	handlerIntHD(int signum)
+// {
+// 	signum = 0;
+// 	rl_on_new_line();
+// 	rl_redisplay();
+// 	write(1, "  \b\b\n", 5);
+// 	exit(1);
+// }
 
-void	sigHDHandle(void)
-{
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handlerIntHD);
-}
+// void	sigHDHandle(void)
+// {
+// 	signal(SIGQUIT, SIG_IGN);
+// 	signal(SIGINT, handlerIntHD);
+// }
 
 t_data	*create_data(char **envp)
 {
@@ -232,7 +232,7 @@ int main(int argc, char **argv, char **envp)
 	// {
 	// 	line = readline("Z&D_Shell > ");
 	// 	sigHandler();
-		line = ft_strdup("echo  \"     \"   hey");
+		line = ft_strdup("echo  \'     \'   hey > a");
 		
 		// if (!line)
 		// {

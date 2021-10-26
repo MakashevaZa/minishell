@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+
+int	check_char(char *line, char ch, int i)
+{
+	while (line[i])
+	{
+		if (line[i] == ch)
+			return (1);
+		(i)++;
+	}
+	return (0);
+}
+
 char *skip_space(char *line, int *i)
 {
 	int j = *i;
@@ -11,7 +23,36 @@ char *skip_space(char *line, int *i)
 	tmp = ft_substr(line, 0, *i + 1);
 	tmp1 = ft_substr(line, j, ft_strlen(line));
 	tmp1 = ft_strjoin(tmp, tmp1);
+	// (*i)++;
 	return (tmp1);
+}
+
+char *single_quote_parse(char *line, int *i)
+{
+	int j = *i;
+	char *tmp;
+	char *tmp2;
+	char *tmp3;
+
+	if (check_char(line, '\'', j + 1) == 1)
+	{
+		while (line[++(*i)])
+		{
+			if (line[(*i)] == '\'')
+				break ;
+		}
+		tmp = ft_substr(line, 0, j);
+		tmp2 = ft_substr(line, j + 1,  *i - j - 1);
+		tmp = ft_strjoin(tmp, tmp2);
+		tmp3 = ft_strdup(line + *i + 1);
+		tmp3 = ft_strjoin(tmp, tmp3);
+		return (tmp3);
+	}
+	else{
+		write(2, "Syntax error!\n", ft_strlen("Syntax error!\n"));
+		exit(1);
+	}
+	return (line);
 }
 
 char *redirect_parse(char *line, int *i, char **envp)
@@ -36,6 +77,8 @@ char *redirect_parse(char *line, int *i, char **envp)
 		tmp = ft_substr(tmp, 0, ft_strlen(tmp) - 1);
 	while(tmp[++k])
 	{
+		if (tmp[k] == '\'')
+			tmp = single_quote_parse(line, &k);
 		if (tmp[k] == ' ')
 			tmp = skip_space(tmp, &k);
 	}
