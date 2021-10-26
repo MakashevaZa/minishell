@@ -43,16 +43,18 @@ t_ast*	create_node(char *value);
 void	insert_left(t_ast **ast, char *value);
 void	add_value(t_ast **ast, char *value);
 void	print_tree_rec(t_ast *ast, int level);
+t_ast*	create_tree(t_ast *ast, char **array);
 
 //------parsing.c------//
 
 int		check_char(char *line, char ch, int i);
 char	*slash_parse(char *line, int *i);
 char	*single_quote_parse(char *line, int *i);
-char	*double_quote_parse(char *line, int *i, char **envp);
+char	*double_quote_parse(char *line, int *i);
 char *skip_space(char *line, int *i);
 char *redirect_parse(char *line, int *i, char **envp);
 char **parsing(char *line, char **envp);
+char	**add_val(char **array, char *val);
 
 //------dollar_parse.c------//
 char	*parse_dollar(char *line, int *i, char **envp);
@@ -105,7 +107,7 @@ void		rl_replace_line(const char *text, int clear_undo);
 
 
 /* ---- executor ------ */
-void go_through_tree(t_ast *ast, t_data *data);
+void go_through_tree(t_ast *ast, t_data *data, char **envp);
 
 
 #endif

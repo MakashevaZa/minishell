@@ -1,5 +1,21 @@
 #include "minishell.h"
 
+t_ast*	create_tree(t_ast *ast, char **array)
+{
+	int i;
+
+	i = 0;
+	while(array[i])
+	{
+		if (ast == NULL)
+			ast = create_node(array[i]);
+		else
+			add_value(&ast, array[i]);
+		i++;
+	}
+	return (ast);
+}
+
 t_ast*	create_first_node(char *value, char *command)
 {
 	t_ast* node;
@@ -25,7 +41,7 @@ t_ast*	create_node(char *value)
 	{
 		node->left = NULL;
 		node->right = NULL;
-		node->value[0] = value;
+		node->value = value;
 		if (ft_strcmp(value, ">") == 0 || ft_strcmp(value, "<") == 0)
         	node->prior = 3;
 		else if (ft_strcmp(value, ">>") == 0 || ft_strcmp(value, "<<") == 0)
@@ -74,7 +90,7 @@ void insert_left(t_ast **ast, char *value)
 {
 	t_ast *tmp = NULL;
 
-	if (&(*ast)->left != NULL)
+	if (&((*ast)->left) != NULL)
 		insert_left(&(*ast)->left, value);
 	if (!(*ast))
 	{

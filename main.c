@@ -171,7 +171,7 @@ char **array_init(char *line)
 // 	signum = 0;
 // 	rl_on_new_line();
 // 	rl_redisplay();
-// 	write(1, "  \b\b\n", 5);
+// 	write(1, "\n", 5);
 // 	rl_on_new_line();
 // 	rl_replace_line("", 1);
 // 	rl_redisplay();
@@ -183,13 +183,13 @@ char **array_init(char *line)
 // 	signal(SIGQUIT, SIG_IGN);
 // 	signal(SIGINT, handlerInt);
 // }
-/*
-char *start_loop(void)
-{
-	sigHandler();
-	return (readline("Z&D_Shell > "));
-}
-*/
+
+// char *start_loop(void)
+// {
+// 	sigHandler();
+// 	return (readline("Z&D_Shell > "));
+// }
+
 // void	handlerIntHD(int signum)
 // {
 // 	signum = 0;
@@ -227,12 +227,13 @@ int main(int argc, char **argv, char **envp)
 
     (void)argc;
     (void)argv;
+	ast = NULL;
 	data = create_data(envp);
-	// while (1)
-	// {
-	// 	line = readline("Z&D_Shell > ");
-	// 	sigHandler();
-		line = ft_strdup("echo  \'     \'   hey > a");
+	while (1)
+	{
+		// line = start_loop();
+		line = readline("Z&D_Shell > ");
+		// line = ft_strdup("echo hello world > a");
 		
 		// if (!line)
 		// {
@@ -244,29 +245,13 @@ int main(int argc, char **argv, char **envp)
 		// 	free(line);
 		// 	continue;
 		// }
-        // add_history(line);
-		/*array = array_init(line); //?
-		if (!array)
-			continue ;*/
-		// pid = fork();
+        add_history(line);
 		array = parsing(line, envp);
-		int i = -1;
-		while (array[++i])
-			printf("%s\n", array[i]);
-		// signal(SIGINT, SIG_IGN);
-		// if (pid == 0)
-		// {
-		// 	sigHDHandle();
-		// 	// ast = parsing(line, envp); 
-	    //     go_through_tree(ast, data);
-
-		// 	exit (0);
-		// }
-		// waitpid(pid, NULL, 0);
-        
-		// printf("%s\n", line);
-	// }
-    // clear_history();
-    return EXIT_SUCCESS;
+		ast = create_tree(ast, array);
+		// print_tree_rec(ast, 0);
+	    go_through_tree(ast, data, envp);
+	}
+    clear_history();
+    // return EXIT_SUCCESS;
 		
 }
